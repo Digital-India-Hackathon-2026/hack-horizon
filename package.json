@@ -1,0 +1,17 @@
+{
+  "name": "agriqueue",
+  "version": "1.0.0",
+  "description": "AgriQueue — Crop Procurement Queue Transparency Platform for Indian Farmers",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && node index.js",
+    "client": "cd client && npm run dev",
+    "seed": "cd server && node seed.js",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "setup": "npm run install:all && npm run seed"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

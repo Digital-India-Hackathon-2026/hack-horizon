@@ -1,0 +1,23 @@
+.queue-header { margin-bottom: 16px; }
+
+.my-position { margin-bottom: 16px; border: 2px solid var(--color-primary-lighter); }
+
+.position-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 16px; }
+.position-card { background: var(--color-border-light); border-radius: var(--radius-md); padding: 16px; text-align: center; }
+.position-card.highlight { background: var(--color-accent-bg); }
+.pos-label { display: block; font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-bottom: 4px; }
+.pos-value { display: block; font-size: var(--font-size-2xl); font-weight: 800; color: var(--color-primary); }
+.pos-value small { font-size: var(--font-size-sm); font-weight: 400; }
+
+.queue-row {
+  display: flex; align-items: center; gap: 12px; padding: 14px 20px;
+  border-bottom: 1px solid var(--color-border-light); transition: background 0.2s;
+}
+.queue-row:hover { background: rgba(45, 106, 79, 0.03); }
+.queue-row.serving { background: var(--color-success-bg); }
+.queue-pos { font-weight: 700; font-size: var(--font-size-base); min-width: 32px; color: var(--color-primary); }
+.queue-name { flex: 1; font-weight: 500; }
+
+@media (max-width: 480px) {
+  .position-grid { grid-template-columns: 1fr; }
+}
