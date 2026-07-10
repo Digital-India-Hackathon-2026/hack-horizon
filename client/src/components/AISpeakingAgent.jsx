@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Vapi from '@vapi-ai/web';
 import './AISpeakingAgent.css';
 
-// Initialize Vapi with the key from environment, or a dummy string to avoid crashing
-const vapi = new Vapi(import.meta.env.VITE_VAPI_PUBLIC_KEY || 'dummy_key');
 
 const assistantConfig = {
   name: "AgriBot",
@@ -48,8 +46,13 @@ const assistantConfig = {
 export default function AISpeakingAgent() {
   const [callStatus, setCallStatus] = useState('inactive'); // inactive, loading, active
   const navigate = useNavigate();
+  const vapiRef = useRef(null);
 
   useEffect(() => {
+    // Initialize Vapi inside useEffect to avoid top-level module errors
+    const vapi = new Vapi(import.meta.env.VITE_VAPI_PUBLIC_KEY || 'dummy_key');
+    vapiRef.current = vapi;
+
     // Vapi event listeners
     vapi.on('call-start', () => setCallStatus('active'));
     vapi.on('call-end', () => setCallStatus('inactive'));
@@ -94,7 +97,9 @@ export default function AISpeakingAgent() {
     }
     setCallStatus('loading');
     try {
-      await vapi.start(assistantConfig);
+      if (vapiRef.current) {
+        await vapiRef.current.start(assistantConfig);
+      }
     } catch (e) {
       console.error(e);
       setCallStatus('inactive');
@@ -103,7 +108,9 @@ export default function AISpeakingAgent() {
   };
 
   const endCall = () => {
-    vapi.stop();
+    if (vapiRef.current) {
+      vapiRef.current.stop();
+    }
     setCallStatus('inactive');
   };
 
