@@ -13,7 +13,7 @@ const doctorController = {
       }
 
       const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      const MODELS = ['gemini-3-flash-preview', 'gemini-2.5-pro', 'gemini-flash-lite-latest'];
 
       const prompt = `You are an expert agricultural AI doctor. Analyze this image of a crop/plant. 
       Identify any visible diseases, pests, or deficiencies. 
@@ -26,20 +26,35 @@ const doctorController = {
       }
       Do not include markdown blocks like \`\`\`json around the response. Just the raw JSON.`;
 
-      const imageParts = [
-        {
-          inlineData: {
-            data: base64Image.replace(/^data:image\/\w+;base64,/, ''), // Strip prefix if present
-            mimeType: mimeType || 'image/jpeg'
-          }
+      const cleanB64 = base64Image.replace(/^data:image\/\w+;base64,/, '');
+      let text;
+
+      let lastErr;
+      for (const modelName of MODELS) {
+        try {
+          const model = genAI.getGenerativeModel({ model: modelName });
+          const imageParts = [
+            {
+              inlineData: {
+                data: cleanB64,
+                mimeType: mimeType || 'image/jpeg'
+              }
+            }
+          ];
+          const result = await model.generateContent([prompt, ...imageParts]);
+          const response = await result.response;
+          text = response.text();
+          break;
+        } catch (e) {
+          lastErr = e;
+          console.error(`Gemini model ${modelName} failed:`, e.message || e);
         }
-      ];
+      }
+      if (!text) {
+        throw lastErr || new Error('No available Gemini model.');
+      }
 
-      const result = await model.generateContent([prompt, ...imageParts]);
-      const response = await result.response;
-      let text = response.text();
-
-      // Clean up the text just in case Gemini adds markdown
+      // Clean up the text just in case the model adds markdown
       text = text.replace(/```json/g, '').replace(/```/g, '').trim();
 
       const parsed = JSON.parse(text);
