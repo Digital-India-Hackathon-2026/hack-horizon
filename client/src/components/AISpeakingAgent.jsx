@@ -370,6 +370,24 @@ export default function AISpeakingAgent() {
     }
   }, [loading, isAuthenticated, activateAgent]);
 
+  // Watch for global start-voice-nav event
+  useEffect(() => {
+    const handleGlobalVoiceNav = () => {
+      setPanelOpen(true);
+      if (!isActiveRef.current) {
+        activateAgent();
+      } else {
+        synthRef.current.cancel();
+        setIsSpeaking(false);
+        isSpeakingRef.current = false;
+        setupAudioAnalyser();
+        setTimeout(() => startListening(), 100);
+      }
+    };
+    window.addEventListener('start-voice-nav', handleGlobalVoiceNav);
+    return () => window.removeEventListener('start-voice-nav', handleGlobalVoiceNav);
+  }, [activateAgent, setupAudioAnalyser, startListening]);
+
   const handleManualStart = () => {
     if (!isActiveRef.current) {
       activateAgent();

@@ -3,7 +3,18 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import './Dashboard.css';
+
+const mockPriceData = [
+  { date: '10 Jun', price: 2150 },
+  { date: '15 Jun', price: 2180 },
+  { date: '20 Jun', price: 2200 },
+  { date: '25 Jun', price: 2250 },
+  { date: '30 Jun', price: 2210 },
+  { date: '05 Jul', price: 2280 },
+  { date: '10 Jul', price: 2300 },
+];
 
 export default function Dashboard() {
   const { t } = useTranslation();
@@ -75,10 +86,30 @@ export default function Dashboard() {
 
         {/* Quick Actions */}
         <div className="quick-actions animate-in" style={{ animationDelay: '0.1s' }}>
+          <button onClick={() => window.dispatchEvent(new CustomEvent('start-voice-nav'))} className="quick-card" style={{ background: 'var(--primary-color)', color: 'white', border: 'none', cursor: 'pointer', textAlign: 'left', width: '100%' }}>
+            <span className="quick-icon" style={{ filter: 'none', background: 'rgba(255,255,255,0.2)' }}>🎤</span>
+            <span style={{ fontWeight: 600 }}>Speak to Navigate</span>
+          </button>
           <Link to="/book" className="quick-card"><span className="quick-icon">🏪</span><span>{t('nav.mandi_booking')}</span></Link>
           <Link to="/map" className="quick-card"><span className="quick-icon">🗺️</span><span>{t('nav.map')}</span></Link>
           <Link to="/prices" className="quick-card"><span className="quick-icon">💰</span><span>{t('nav.prices')}</span></Link>
           <Link to="/schemes" className="quick-card"><span className="quick-icon">📋</span><span>{t('nav.schemes')}</span></Link>
+        </div>
+
+        {/* Price Trend Chart */}
+        <div className="dash-section animate-in" style={{ animationDelay: '0.15s', marginTop: '24px' }}>
+          <h2 className="section-heading">📈 Wheat Price Trend (30 Days)</h2>
+          <div className="card" style={{ height: '300px', padding: '20px' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={mockPriceData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="date" stroke="#6b7280" fontSize={12} />
+                <YAxis stroke="#6b7280" fontSize={12} domain={['dataMin - 50', 'dataMax + 50']} tickFormatter={(value) => `₹${value}`} />
+                <Tooltip formatter={(value) => [`₹${value}`, 'Price / Quintal']} />
+                <Line type="monotone" dataKey="price" stroke="var(--primary-color)" strokeWidth={3} activeDot={{ r: 8 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         <div className="dash-grid">
