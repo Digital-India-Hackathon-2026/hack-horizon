@@ -225,7 +225,9 @@ async function initDb() {
   // Seed default items if empty or less than 15
   const [seedRows] = await pool.query('SELECT COUNT(*) as count FROM seeds');
   if (seedRows[0].count < 15) {
+    await pool.query('SET FOREIGN_KEY_CHECKS = 0');
     await pool.query('DELETE FROM seeds');
+    await pool.query('SET FOREIGN_KEY_CHECKS = 1');
     
     const newSeeds = [
       ['Golden Wheat Seeds', 'Kisan Gold', 1200, 1400, 4.9, '4.2K', 50, 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80', 'High-yield drought-resistant wheat variant perfect for dry regions.', '100% Organic', JSON.stringify(['Drought Resistant', 'High Yield', 'Fast Growth'])],
