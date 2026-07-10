@@ -52,6 +52,24 @@ export default function SlotBooking() {
 
   const handleBook = async () => {
     setError('');
+    
+    // --- HACKATHON FEATURE: SMS Fallback (Zero-Internet Booking) ---
+    if (!navigator.onLine) {
+      const smsBody = `BOOK MANDI ${selectedCenter.id} ${selectedDate} ${selectedSlot} ${cropType} ${quantity || 0}`;
+      // In a real scenario, this would be a Twilio Toll-Free number
+      const phoneNumber = '+919876543210'; 
+      window.open(`sms:${phoneNumber}?body=${encodeURIComponent(smsBody)}`);
+      setSuccess({
+        center_name: selectedCenter.name,
+        booking: { slot_date: selectedDate, slot_time: selectedSlot, id: 'OFFLINE-' + Date.now() },
+        token: { token_code: 'SMS-PENDING' },
+        queue_position: '?',
+        wait_estimate: { estimatedMinutes: '?' }
+      });
+      return;
+    }
+    // ---------------------------------------------------------------
+
     setBooking(true);
     try {
       const res = await api.post('/bookings', {

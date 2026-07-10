@@ -35,6 +35,7 @@ app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/seeds', require('./routes/seedRoutes'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/transport', require('./routes/transportRoutes'));
+app.use('/api/ai-agent', require('./routes/aiAgent'));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString(), version: '1.0.0', name: 'AgriQueue API' });
@@ -48,7 +49,7 @@ app.use((err, req, res, next) => {
 // Initialize database then start server
 async function start() {
   await getDb();
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`\n  🌾 AgriQueue API Server running on http://localhost:${PORT}\n`);
   });
 }

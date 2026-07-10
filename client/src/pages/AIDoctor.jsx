@@ -98,16 +98,50 @@ export default function AIDoctor() {
                   {/* Scanning Animation overlay */}
                   {analyzing && (
                     <>
+                      {/* Laser Line */}
                       <div style={{
                         position: 'absolute',
                         left: 0,
                         width: '100%',
-                        height: '4px',
-                        background: 'var(--color-primary)',
-                        boxShadow: '0 0 15px 4px var(--color-primary)',
-                        animation: 'scan 2s infinite ease-in-out'
+                        height: '3px',
+                        background: '#00ff00',
+                        boxShadow: '0 0 20px 5px rgba(0, 255, 0, 0.8)',
+                        animation: 'scan 2s infinite linear'
                       }}></div>
-                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(76,175,80,0.1), transparent)', animation: 'pulse 1s infinite alternate' }}></div>
+
+                      {/* AR Targeting Bracket (Top Left) */}
+                      <div style={{ position: 'absolute', top: '10%', left: '10%', width: '40px', height: '40px', borderTop: '4px solid #00ff00', borderLeft: '4px solid #00ff00', opacity: 0.8 }}></div>
+                      {/* AR Targeting Bracket (Top Right) */}
+                      <div style={{ position: 'absolute', top: '10%', right: '10%', width: '40px', height: '40px', borderTop: '4px solid #00ff00', borderRight: '4px solid #00ff00', opacity: 0.8 }}></div>
+                      {/* AR Targeting Bracket (Bottom Left) */}
+                      <div style={{ position: 'absolute', bottom: '10%', left: '10%', width: '40px', height: '40px', borderBottom: '4px solid #00ff00', borderLeft: '4px solid #00ff00', opacity: 0.8 }}></div>
+                      {/* AR Targeting Bracket (Bottom Right) */}
+                      <div style={{ position: 'absolute', bottom: '10%', right: '10%', width: '40px', height: '40px', borderBottom: '4px solid #00ff00', borderRight: '4px solid #00ff00', opacity: 0.8 }}></div>
+
+                      {/* Pulsing Grid Overlay */}
+                      <div style={{ 
+                        position: 'absolute', 
+                        inset: 0, 
+                        background: 'linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px)',
+                        backgroundSize: '20px 20px',
+                        animation: 'pulse 1.5s infinite alternate' 
+                      }}></div>
+
+                      {/* Scanning Text */}
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '20px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        color: '#00ff00',
+                        fontFamily: 'monospace',
+                        fontSize: '18px',
+                        fontWeight: 'bold',
+                        letterSpacing: '2px',
+                        textShadow: '0 0 10px #00ff00'
+                      }}>
+                        ANALYZING...
+                      </div>
                     </>
                   )}
                   

@@ -5,6 +5,7 @@ import './i18n';
 
 // Components
 import Navbar from './components/Navbar';
+import AISpeakingAgent from './components/AISpeakingAgent';
 
 // Pages
 import Landing from './pages/Landing';
@@ -65,6 +66,7 @@ function AppContent() {
       )}
       <Navbar />
       <Sidebar />
+      <AISpeakingAgent />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />

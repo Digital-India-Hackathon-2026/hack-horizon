@@ -24,9 +24,20 @@ export default function TransportBooking() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
-    
+
+    // --- HACKATHON FEATURE: SMS Fallback (Zero-Internet Booking) ---
+    if (!navigator.onLine) {
+      const smsBody = `TRANSPORT ${formData.vehicle_name} FROM ${formData.pickup_location} TO ${formData.drop_location} ON ${formData.booking_date}`;
+      const phoneNumber = '+919876543210';
+      window.open(`sms:${phoneNumber}?body=${encodeURIComponent(smsBody)}`);
+      setSuccess(true);
+      setTimeout(() => navigate('/transport'), 3000);
+      return;
+    }
+    // ---------------------------------------------------------------
+
+    setLoading(true);
     try {
       await api.post('/transport/book', formData);
       setSuccess(true);

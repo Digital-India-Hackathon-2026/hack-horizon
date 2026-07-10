@@ -1,0 +1,389 @@
+/* ═══════════════════════════════════════════════
+   AI Speaking Agent - Floating Voice Assistant
+   ═══════════════════════════════════════════════ */
+
+/* ─── Floating Action Button ─── */
+.aib-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(45, 106, 79, 0.35), 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: aib-bounce-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.aib-fab:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 12px 40px rgba(45, 106, 79, 0.45), 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.aib-fab:active {
+  transform: scale(0.95);
+}
+
+.aib-fab-icon {
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+}
+
+.aib-fab-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: var(--color-accent);
+  color: var(--color-primary-dark);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+  z-index: 3;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.aib-fab-pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 3px solid var(--color-primary-lighter);
+  opacity: 0;
+  animation: none;
+}
+
+.aib-fab-pulse.listening {
+  animation: aib-pulse-ring 1.5s ease-out infinite;
+}
+
+@keyframes aib-pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+@keyframes aib-bounce-in {
+  0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+  60% { transform: scale(1.1) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* ─── Chat Panel ─── */
+.aib-panel {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 400px;
+  max-width: calc(100vw - 32px);
+  height: 560px;
+  max-height: calc(100vh - 100px);
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(45, 106, 79, 0.15);
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  overflow: hidden;
+  border: 1px solid rgba(45, 106, 79, 0.15);
+  animation: aib-panel-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes aib-panel-in {
+  0% { transform: scale(0.8) translateY(20px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* ─── Header ─── */
+.aib-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  color: white;
+}
+
+.aib-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.aib-header-icon {
+  font-size: 28px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.aib-header-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.aib-header-status {
+  font-size: 12px;
+  opacity: 0.85;
+  font-weight: 500;
+}
+
+.aib-close-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.aib-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ─── Messages ─── */
+.aib-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: linear-gradient(180deg, rgba(216, 243, 220, 0.15) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.aib-messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.aib-messages::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.aib-msg {
+  display: flex;
+  gap: 8px;
+  max-width: 88%;
+  animation: aib-msg-in 0.3s ease;
+}
+
+@keyframes aib-msg-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.aib-msg.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.aib-msg.bot {
+  align-self: flex-start;
+}
+
+.aib-msg-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  background: var(--color-primary-bg);
+}
+
+.aib-msg-bubble {
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.aib-msg.bot .aib-msg-bubble {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border-light);
+  border-bottom-left-radius: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.aib-msg.user .aib-msg-bubble {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 12px rgba(45, 106, 79, 0.25);
+}
+
+/* ─── Typing Indicator ─── */
+.aib-typing {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 14px 20px !important;
+}
+
+.aib-typing span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary-lighter);
+  animation: aib-dot-bounce 1.4s ease-in-out infinite;
+}
+
+.aib-typing span:nth-child(2) { animation-delay: 0.16s; }
+.aib-typing span:nth-child(3) { animation-delay: 0.32s; }
+
+@keyframes aib-dot-bounce {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+  40% { transform: scale(1.1); opacity: 1; }
+}
+
+/* ─── Error ─── */
+.aib-error {
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-error);
+  background: var(--color-error-bg);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+/* ─── Controls ─── */
+.aib-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border-light);
+}
+
+.aib-mic-btn {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid var(--color-primary);
+  background: var(--color-surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.aib-mic-btn:hover {
+  background: var(--color-primary-bg);
+  transform: scale(1.05);
+}
+
+.aib-mic-btn.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary-dark);
+  box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.2);
+}
+
+.aib-mic-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.aib-mic-icon {
+  font-size: 24px;
+  z-index: 2;
+  transition: filter 0.2s;
+}
+
+.aib-mic-btn.active .aib-mic-icon {
+  filter: brightness(0) invert(1);
+}
+
+.aib-mic-ripple {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary-lighter);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.aib-mic-ripple.active {
+  animation: aib-mic-pulse 1.2s ease-out infinite;
+}
+
+@keyframes aib-mic-pulse {
+  0% { transform: scale(0.85); opacity: 0.7; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+.aib-stop-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--color-error);
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.aib-stop-btn:hover {
+  background: var(--color-error);
+  color: white;
+}
+
+.aib-listening-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  animation: aib-text-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes aib-text-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 480px) {
+  .aib-fab {
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+  }
+
+  .aib-panel {
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    max-width: 100vw;
+  }
+}

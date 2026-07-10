@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import api from '../utils/api';
@@ -13,6 +13,15 @@ L.Icon.Default.mergeOptions({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
+
+// Helper function for Heatmap color
+const getHeatmapColor = (current, capacity) => {
+  if (!capacity) return '#059669'; // Green if unknown
+  const ratio = current / capacity;
+  if (ratio > 0.8) return '#DC2626'; // Red (Crowded)
+  if (ratio > 0.5) return '#D97706'; // Yellow (Moderate)
+  return '#059669'; // Green (Empty)
+};
 
 export default function MapView() {
   const { t } = useTranslation();
@@ -72,7 +81,21 @@ export default function MapView() {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               />
               {filteredCenters.map(c => (
-                <Marker key={c.id} position={[c.location_lat, c.location_lng]}>
+                <div key={c.id}>
+                  {/* --- HACKATHON FEATURE: Live Crowd Heatmap --- */}
+                  <Circle 
+                    center={[c.location_lat, c.location_lng]} 
+                    pathOptions={{ 
+                      fillColor: getHeatmapColor(c.current_queue, c.capacity_per_slot || 100), 
+                      fillOpacity: 0.3,
+                      color: getHeatmapColor(c.current_queue, c.capacity_per_slot || 100),
+                      weight: 1
+                    }} 
+                    radius={50000} // Radius in meters (visual size)
+                  />
+                  {/* --------------------------------------------- */}
+
+                  <Marker position={[c.location_lat, c.location_lng]}>
                   <Popup>
                     <div style={{ padding: '4px 0', minWidth: 200 }}>
                       <h3 style={{ fontSize: 16, margin: '0 0 8px', color: 'var(--color-primary-dark)' }}>{c.name}</h3>
@@ -110,6 +133,7 @@ export default function MapView() {
                     </div>
                   </Popup>
                 </Marker>
+                </div>
               ))}
             </MapContainer>
           </div>
