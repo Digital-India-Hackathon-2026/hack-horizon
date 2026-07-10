@@ -1,49 +1,52 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useNavigate } from 'react-router-dom';
+
 export default function Transport() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const assets = [
     {
       id: 1,
-      name: 'DJI Agras T40 Drone',
-      distance: '2.4km away',
-      price: 2500,
-      unit: '/hr',
+      name: 'Small Pickup Truck',
+      distance: '5 km away',
+      price: 500,
+      unit: '/trip',
       rating: '4.8',
-      image: 'https://images.unsplash.com/photo-1579822981966-1c2ce0c279c4?w=300&q=30',
-      tags: ['Spraying', 'Mapping']
+      image: 'https://images.unsplash.com/photo-1600762399222-1bba29db3ba4?w=300&q=30',
+      tags: ['1 Ton Capacity', 'Fast']
     },
     {
       id: 2,
-      name: 'John Deere Autonomous',
-      distance: '5.1km away',
+      name: 'Medium Cargo Truck',
+      distance: '12 km away',
       price: 1200,
-      unit: '/hr',
+      unit: '/trip',
       rating: '4.9',
-      image: 'https://images.unsplash.com/photo-1592982537447-6f208c6e04d9?w=300&q=30',
-      tags: ['Tilling', 'Seeding']
+      image: 'https://images.unsplash.com/photo-1583097103394-1a3b934bd04a?w=300&q=30',
+      tags: ['5 Ton Capacity', 'Covered']
     },
     {
       id: 3,
-      name: 'Harvest Assistant Bot',
-      distance: '1.2km away',
+      name: 'Farm Tractor with Trailer',
+      distance: '3 km away',
       price: 800,
-      unit: '/hr',
+      unit: '/trip',
       rating: '4.5',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&q=30',
-      tags: ['Picking', 'Sorting']
+      image: 'https://images.unsplash.com/photo-1626245084920-562779a557b7?w=300&q=30',
+      tags: ['Local Transport', 'High Torque']
     },
     {
       id: 4,
-      name: 'Solar Cargo Truck',
-      distance: '8km away',
-      price: 1500,
-      unit: '/hr',
+      name: 'Heavy Cold Storage Truck',
+      distance: '20 km away',
+      price: 2500,
+      unit: '/trip',
       rating: '4.2',
-      image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=300&q=30',
-      tags: ['Cold Storage']
+      image: 'https://images.unsplash.com/photo-1612543888390-34907963d89f?w=300&q=30',
+      tags: ['Cold Storage', 'Long Distance']
     }
   ];
 
@@ -108,11 +111,9 @@ export default function Transport() {
                 </div>
 
                 <button 
-                  onClick={() => handleBook(asset.name)}
-                  className="btn btn-primary"
-                  style={{ marginTop: 'auto', border: 'none', padding: '12px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.95rem', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
-                >
-                  <span>+</span> Add to Cart
+                  onClick={() => navigate('/book-transport', { state: { vehicleName: asset.name } })}
+                  style={{ width: '100%', background: '#2D6A4F', color: 'white', border: 'none', padding: '10px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+                  Register
                 </button>
               </div>
             </div>

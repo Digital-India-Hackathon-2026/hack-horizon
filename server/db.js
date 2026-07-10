@@ -217,6 +217,20 @@ async function initDb() {
     )
   `);
 
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS transport_bookings (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      farmer_id INT NOT NULL,
+      vehicle_name VARCHAR(255) NOT NULL,
+      pickup_location VARCHAR(255) NOT NULL,
+      drop_location VARCHAR(255) NOT NULL,
+      booking_date DATETIME NOT NULL,
+      status ENUM('pending','confirmed','completed','cancelled') DEFAULT 'pending',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (farmer_id) REFERENCES farmers(id)
+    )
+  `);
+
   // Try to alter table to add columns in case it exists
   try { await pool.query('ALTER TABLE seeds ADD COLUMN description TEXT'); } catch(e) {}
   try { await pool.query('ALTER TABLE seeds ADD COLUMN badge VARCHAR(100)'); } catch(e) {}
@@ -230,24 +244,24 @@ async function initDb() {
     await pool.query('SET FOREIGN_KEY_CHECKS = 1');
     
     const newSeeds = [
-      ['Golden Wheat Seeds', 'Kisan Gold', 1200, 1400, 4.9, '4.2K', 50, 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=300&q=30', 'High-yield drought-resistant wheat variant perfect for dry regions.', '100% Organic', JSON.stringify(['Drought Resistant', 'High Yield', 'Fast Growth'])],
-      ['Basmati Royal Rice', 'Heritage Seeds', 1800, 2000, 4.8, '12K', 40, 'https://images.unsplash.com/photo-1596547609652-9fc5d8d428ae?w=300&q=30', 'Premium aromatic basmati rice seeds. Export quality grain length.', '', JSON.stringify(['Aromatic', 'Long Grain', 'Premium'])],
-      ['Hybrid Tomato F1', 'AgriTech', 450, 500, 4.6, '2.1K', 100, 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300&q=30', 'Disease-resistant hybrid tomato seeds suitable for greenhouse farming.', '100% Organic', JSON.stringify(['Disease Resistant', 'High Shelf Life'])],
-      ['Bt Cotton Bollgard', 'Monsanto (Generic)', 800, 950, 4.7, '3.5K', 150, 'https://images.unsplash.com/photo-1506509623273-03b22cfd84de?w=300&q=30', 'Genetically modified cotton seeds resistant to bollworms.', '', JSON.stringify(['Pest Resistant', 'High Fiber'])],
-      ['Mustard Gold 99', 'Desi Seeds', 600, 700, 4.5, '1.8K', 80, 'https://plus.unsplash.com/premium_photo-1667049281358-00fb4c207904?w=300&q=30', 'High oil content mustard seeds. Traditional flavor with modern yield.', '100% Organic', JSON.stringify(['High Oil %', 'Hardy Crop'])],
-      ['Soybean Super Protein', 'NutriFarm', 2200, 2500, 4.8, '5.6K', 60, 'https://images.unsplash.com/photo-1634552973167-33989c9e54a9?w=300&q=30', 'Protein-rich soybean variety. Great for soil nitrogen fixation.', '100% Organic', JSON.stringify(['Nitrogen Fixer', 'Protein Rich'])],
-      ['Kharif Maize Hybrid', 'Kisan Gold', 700, 850, 4.3, '1.2K', 120, 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=300&q=30', 'Fast-growing maize suitable for Kharif season planting.', '', JSON.stringify(['Fast Growth', 'Sturdy Stalks'])],
-      ['Groundnut Bold 44', 'Heritage Seeds', 1500, 1750, 4.6, '2.9K', 45, 'https://images.unsplash.com/photo-1627844641973-c15555d81b43?w=300&q=30', 'High oil yielding groundnut seeds. Best for sandy loam soil.', 'Top Seller', JSON.stringify(['High Yield', 'Oil Rich'])],
-      ['Sugarcane Setts CO-0238', 'SugarCo', 2500, 2800, 4.4, '800', 30, 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&q=30', 'High sugar recovery variety. Disease free tissue culture setts.', '', JSON.stringify(['High Recovery', 'Disease Free'])],
-      ['Turmeric Seed Rhizomes', 'SpiceFarm', 950, 1100, 4.7, '3.1K', 75, 'https://images.unsplash.com/photo-1615486171407-3a8789506691?w=300&q=30', 'High curcumin content turmeric rhizomes. Organic certified.', '100% Organic', JSON.stringify(['High Curcumin', 'Medicinal'])],
-      ['Jowar (Sorghum) Pro', 'Desi Seeds', 400, 500, 4.2, '1.5K', 200, 'https://images.unsplash.com/photo-1635398246328-91db4332f14f?w=300&q=30', 'Dual purpose sorghum for grain and fodder. Highly drought tolerant.', '', JSON.stringify(['Drought Tolerant', 'Dual Purpose'])],
-      ['Onion Red Nashik', 'AgriTech', 1100, 1300, 4.8, '6.7K', 90, 'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=300&q=30', 'Classic pungent red onion seeds with excellent storage life.', 'Top Rated', JSON.stringify(['High Shelf Life', 'Pungent'])],
-      ['Chilli Teja Guntur', 'SpiceFarm', 1800, 2100, 4.9, '15K', 20, 'https://images.unsplash.com/photo-1597561817757-76ce93848b8a?w=300&q=30', 'Extremely spicy red chilli seeds. Premium export quality.', 'Bestseller', JSON.stringify(['High Pungency', 'Export Quality'])],
-      ['Potato Seed Tubers', 'NutriFarm', 1300, 1500, 4.4, '2.3K', 60, 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=300&q=30', 'Disease-free potato tubers for uniform and high yield.', '', JSON.stringify(['Uniform Yield', 'Disease Free'])],
-      ['Cabbage Green F1', 'AgriTech', 350, 450, 4.5, '1.1K', 150, 'https://images.unsplash.com/photo-1597348989645-46b190ce4918?w=300&q=30', 'Compact and heavy cabbage heads. Resistant to black rot.', '100% Organic', JSON.stringify(['Black Rot Resistant', 'Compact Head'])],
-      ['Carrot Kuroda', 'Heritage Seeds', 400, 500, 4.3, '900', 100, 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=300&q=30', 'Deep orange, sweet and tender carrots. High market demand.', '', JSON.stringify(['Sweet Taste', 'High Demand'])],
-      ['Spinach All Green', 'Kisan Gold', 250, 300, 4.6, '3.4K', 250, 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=300&q=30', 'Fast growing leafy spinach. Rich in iron and vitamins.', '100% Organic', JSON.stringify(['Fast Growth', 'Iron Rich'])],
-      ['Okra (Bhindi) Hybrid', 'AgriTech', 500, 600, 4.4, '2.8K', 130, 'https://images.unsplash.com/photo-1599557434199-a9821ebd058d?w=300&q=30', 'Dark green, tender okra. Resistant to Yellow Vein Mosaic Virus.', '', JSON.stringify(['YVMV Resistant', 'Tender'])]
+      ['Golden Wheat Seeds', 'Kisan Gold', 1200, 1400, 4.9, '4.2K', 50, 'https://images.unsplash.com/photo-1599839619722-39751411ea63?w=300&q=30', 'High-yield drought-resistant wheat variant perfect for dry regions.', '100% Organic', JSON.stringify(['Drought Resistant', 'High Yield', 'Fast Growth'])],
+      ['Basmati Royal Rice', 'Heritage Seeds', 1800, 2000, 4.8, '12K', 40, 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=300&q=30', 'Premium aromatic basmati rice seeds. Export quality grain length.', '', JSON.stringify(['Aromatic', 'Long Grain', 'Premium'])],
+      ['Hybrid Tomato F1', 'AgriTech', 450, 500, 4.6, '2.1K', 100, 'https://images.unsplash.com/photo-1615486171407-3a8789506691?w=300&q=30', 'Disease-resistant hybrid tomato seeds suitable for greenhouse farming.', '100% Organic', JSON.stringify(['Disease Resistant', 'High Shelf Life'])],
+      ['Bt Cotton Bollgard', 'Monsanto (Generic)', 800, 950, 4.7, '3.5K', 150, 'https://images.unsplash.com/photo-1590159496033-de12e3ef1768?w=300&q=30', 'Genetically modified cotton seeds resistant to bollworms.', '', JSON.stringify(['Pest Resistant', 'High Fiber'])],
+      ['Mustard Gold 99', 'Desi Seeds', 600, 700, 4.5, '1.8K', 80, 'https://images.unsplash.com/photo-1615486171407-3a8789506691?w=300&q=30', 'High oil content mustard seeds. Traditional flavor with modern yield.', '100% Organic', JSON.stringify(['High Oil %', 'Hardy Crop'])],
+      ['Soybean Super Protein', 'NutriFarm', 2200, 2500, 4.8, '5.6K', 60, 'https://images.unsplash.com/photo-1571210985558-76c2438596c3?w=300&q=30', 'Protein-rich soybean variety. Great for soil nitrogen fixation.', '100% Organic', JSON.stringify(['Nitrogen Fixer', 'Protein Rich'])],
+      ['Kharif Maize Hybrid', 'Kisan Gold', 700, 850, 4.3, '1.2K', 120, 'https://images.unsplash.com/photo-1599839619722-39751411ea63?w=300&q=30', 'Fast-growing maize suitable for Kharif season planting.', '', JSON.stringify(['Fast Growth', 'Sturdy Stalks'])],
+      ['Groundnut Bold 44', 'Heritage Seeds', 1500, 1750, 4.6, '2.9K', 45, 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=300&q=30', 'High oil yielding groundnut seeds. Best for sandy loam soil.', 'Top Seller', JSON.stringify(['High Yield', 'Oil Rich'])],
+      ['Sugarcane Setts CO-0238', 'SugarCo', 2500, 2800, 4.4, '800', 30, 'https://images.unsplash.com/photo-1615486171407-3a8789506691?w=300&q=30', 'High sugar recovery variety. Disease free tissue culture setts.', '', JSON.stringify(['High Recovery', 'Disease Free'])],
+      ['Turmeric Seed Rhizomes', 'SpiceFarm', 950, 1100, 4.7, '3.1K', 75, 'https://images.unsplash.com/photo-1590159496033-de12e3ef1768?w=300&q=30', 'High curcumin content turmeric rhizomes. Organic certified.', '100% Organic', JSON.stringify(['High Curcumin', 'Medicinal'])],
+      ['Jowar (Sorghum) Pro', 'Desi Seeds', 400, 500, 4.2, '1.5K', 200, 'https://images.unsplash.com/photo-1571210985558-76c2438596c3?w=300&q=30', 'Dual purpose sorghum for grain and fodder. Highly drought tolerant.', '', JSON.stringify(['Drought Tolerant', 'Dual Purpose'])],
+      ['Onion Red Nashik', 'AgriTech', 1100, 1300, 4.8, '6.7K', 90, 'https://images.unsplash.com/photo-1599839619722-39751411ea63?w=300&q=30', 'Classic pungent red onion seeds with excellent storage life.', 'Top Rated', JSON.stringify(['High Shelf Life', 'Pungent'])],
+      ['Chilli Teja Guntur', 'SpiceFarm', 1800, 2100, 4.9, '15K', 20, 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=300&q=30', 'Extremely spicy red chilli seeds. Premium export quality.', 'Bestseller', JSON.stringify(['High Pungency', 'Export Quality'])],
+      ['Potato Seed Tubers', 'NutriFarm', 1300, 1500, 4.4, '2.3K', 60, 'https://images.unsplash.com/photo-1615486171407-3a8789506691?w=300&q=30', 'Disease-free potato tubers for uniform and high yield.', '', JSON.stringify(['Uniform Yield', 'Disease Free'])],
+      ['Cabbage Green F1', 'AgriTech', 350, 450, 4.5, '1.1K', 150, 'https://images.unsplash.com/photo-1590159496033-de12e3ef1768?w=300&q=30', 'Compact and heavy cabbage heads. Resistant to black rot.', '100% Organic', JSON.stringify(['Black Rot Resistant', 'Compact Head'])],
+      ['Carrot Kuroda', 'Heritage Seeds', 400, 500, 4.3, '900', 100, 'https://images.unsplash.com/photo-1571210985558-76c2438596c3?w=300&q=30', 'Deep orange, sweet and tender carrots. High market demand.', '', JSON.stringify(['Sweet Taste', 'High Demand'])],
+      ['Spinach All Green', 'Kisan Gold', 250, 300, 4.6, '3.4K', 250, 'https://images.unsplash.com/photo-1599839619722-39751411ea63?w=300&q=30', 'Fast growing leafy spinach. Rich in iron and vitamins.', '100% Organic', JSON.stringify(['Fast Growth', 'Iron Rich'])],
+      ['Okra (Bhindi) Hybrid', 'AgriTech', 500, 600, 4.4, '2.8K', 130, 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=300&q=30', 'Dark green, tender okra. Resistant to Yellow Vein Mosaic Virus.', '', JSON.stringify(['YVMV Resistant', 'Tender'])]
     ];
 
     for (const s of newSeeds) {

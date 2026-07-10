@@ -34,6 +34,7 @@ app.use('/api/schemes', require('./routes/schemes'));
 app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/seeds', require('./routes/seedRoutes'));
 app.use('/api/payments', require('./routes/payments'));
+app.use('/api/transport', require('./routes/transportRoutes'));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString(), version: '1.0.0', name: 'AgriQueue API' });
