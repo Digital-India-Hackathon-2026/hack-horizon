@@ -86,10 +86,7 @@ export default function Dashboard() {
 
         {/* Quick Actions */}
         <div className="quick-actions animate-in" style={{ animationDelay: '0.1s' }}>
-          <button onClick={() => window.dispatchEvent(new CustomEvent('start-voice-nav'))} className="quick-card" style={{ background: 'var(--primary-color)', color: 'white', border: 'none', cursor: 'pointer', textAlign: 'left', width: '100%' }}>
-            <span className="quick-icon" style={{ filter: 'none', background: 'rgba(255,255,255,0.2)' }}>🎤</span>
-            <span style={{ fontWeight: 600 }}>Speak to Navigate</span>
-          </button>
+
           <Link to="/book" className="quick-card"><span className="quick-icon">🏪</span><span>{t('nav.mandi_booking')}</span></Link>
           <Link to="/map" className="quick-card"><span className="quick-icon">🗺️</span><span>{t('nav.map')}</span></Link>
           <Link to="/prices" className="quick-card"><span className="quick-icon">💰</span><span>{t('nav.prices')}</span></Link>
