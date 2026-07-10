@@ -15,7 +15,7 @@ export default function Transport() {
       price: 500,
       unit: '/trip',
       rating: '4.8',
-      image: 'https://placehold.co/300x200/2D6A4F/FFF?text=Small+Pickup+Truck',
+      image: '/images/truck1.jpg',
       tags: ['1 Ton Capacity', 'Fast']
     },
     {
@@ -25,7 +25,7 @@ export default function Transport() {
       price: 1200,
       unit: '/trip',
       rating: '4.9',
-      image: 'https://placehold.co/300x200/2D6A4F/FFF?text=Medium+Cargo+Truck',
+      image: '/images/truck2.jpg',
       tags: ['5 Ton Capacity', 'Covered']
     },
     {
@@ -35,7 +35,7 @@ export default function Transport() {
       price: 800,
       unit: '/trip',
       rating: '4.5',
-      image: 'https://placehold.co/300x200/2D6A4F/FFF?text=Tractor+with+Trailer',
+      image: '/images/truck3.jpg',
       tags: ['Local Transport', 'High Torque']
     },
     {
@@ -45,7 +45,7 @@ export default function Transport() {
       price: 2500,
       unit: '/trip',
       rating: '4.2',
-      image: 'https://placehold.co/300x200/2D6A4F/FFF?text=Cold+Storage+Truck',
+      image: '/images/truck4.jpg',
       tags: ['Cold Storage', 'Long Distance']
     }
   ];
