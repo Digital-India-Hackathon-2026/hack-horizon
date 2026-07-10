@@ -7,14 +7,9 @@ const QRCode = require('qrcode');
 async function generateToken(bookingId, centerName, slotDate, slotTime) {
   const tokenCode = `AQ-${uuidv4().split('-')[0].toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
   
-  const qrPayload = JSON.stringify({
-    token: tokenCode,
-    booking: bookingId,
-    center: centerName,
-    date: slotDate,
-    time: slotTime,
-    issued: new Date().toISOString()
-  });
+  // Create a URL pointing to the digital receipt page on the frontend
+  const baseUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+  const qrPayload = `${baseUrl}/receipt/${bookingId}`;
 
   const qrDataUrl = await QRCode.toDataURL(qrPayload, {
     width: 300,

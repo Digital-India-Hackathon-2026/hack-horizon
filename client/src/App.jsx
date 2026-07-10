@@ -25,6 +25,7 @@ import AIDoctor from './pages/AIDoctor';
 import Weather from './pages/Weather';
 import Transport from './pages/Transport';
 import TransportBooking from './pages/TransportBooking';
+import Receipt from './pages/Receipt';
 
 // Payment Pages
 import BillPage from './pages/BillPage';
@@ -79,6 +80,9 @@ function AppContent() {
         <Route path="/weather" element={<Weather />} />
         <Route path="/transport" element={<Transport />} />
         <Route path="/book-transport" element={<TransportBooking />} />
+        
+        {/* Receipt Route */}
+        <Route path="/receipt/:id" element={<Receipt />} />
 
         {/* Payment Routes */}
         <Route path="/bill/:orderId" element={<ProtectedRoute><BillPage /></ProtectedRoute>} />
