@@ -8,6 +8,7 @@ export default function VoiceBot() {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const recognitionRef = useRef(null);
+  const transcriptRef = useRef('');
 
   useEffect(() => {
     // Initialize Web Speech API
@@ -21,6 +22,7 @@ export default function VoiceBot() {
       recognitionRef.current.onstart = () => {
         setIsListening(true);
         setTranscript('');
+        transcriptRef.current = '';
       };
 
       recognitionRef.current.onresult = (event) => {
@@ -28,6 +30,7 @@ export default function VoiceBot() {
         for (let i = event.resultIndex; i < event.results.length; i++) {
           currentTranscript += event.results[i][0].transcript;
         }
+        transcriptRef.current = currentTranscript;
         setTranscript(currentTranscript);
       };
 
@@ -38,10 +41,14 @@ export default function VoiceBot() {
 
       recognitionRef.current.onend = () => {
         setIsListening(false);
-        processIntent(transcript);
+        processIntent(transcriptRef.current);
       };
     }
-  }, [transcript]);
+
+    return () => {
+      recognitionRef.current?.abort();
+    };
+  }, []);
 
   const toggleListening = () => {
     if (isListening) {

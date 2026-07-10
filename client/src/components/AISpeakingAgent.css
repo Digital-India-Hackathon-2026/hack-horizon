@@ -5,8 +5,8 @@
 /* ─── Floating Action Button ─── */
 .aib-fab {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: 40px;
+  right: 32px;
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -54,6 +54,24 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
+.aib-fab-status-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid var(--color-primary-dark);
+  z-index: 3;
+  animation: aib-status-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes aib-status-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
+  50% { box-shadow: 0 0 0 4px rgba(34, 197, 94, 0); }
+}
+
 .aib-fab-pulse {
   position: absolute;
   inset: -6px;
@@ -83,9 +101,9 @@
   position: fixed;
   bottom: 28px;
   right: 28px;
-  width: 400px;
+  width: 420px;
   max-width: calc(100vw - 32px);
-  height: 560px;
+  height: 600px;
   max-height: calc(100vh - 100px);
   background: var(--color-surface);
   border-radius: var(--radius-xl);
@@ -196,6 +214,10 @@
   align-self: flex-start;
 }
 
+.aib-msg.interim {
+  opacity: 0.6;
+}
+
 .aib-msg-avatar {
   width: 30px;
   height: 30px;
@@ -229,6 +251,15 @@
   color: white;
   border-bottom-right-radius: 4px;
   box-shadow: 0 4px 12px rgba(45, 106, 79, 0.25);
+}
+
+.aib-cursor {
+  animation: aib-blink 0.8s step-end infinite;
+  font-weight: 300;
+}
+
+@keyframes aib-blink {
+  50% { opacity: 0; }
 }
 
 /* ─── Typing Indicator ─── */
@@ -266,12 +297,42 @@
   font-weight: 500;
 }
 
+/* ─── Volume Visualizer ─── */
+.aib-volume-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 20px;
+  background: var(--color-surface);
+}
+
+.aib-volume-segment {
+  width: 4px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--color-border);
+  transition: all 0.1s ease;
+}
+
+.aib-volume-segment.active {
+  background: var(--color-primary);
+  height: 20px;
+  animation: aib-volume-pulse 0.3s ease;
+}
+
+@keyframes aib-volume-pulse {
+  0% { transform: scaleY(0.5); }
+  50% { transform: scaleY(1.2); }
+  100% { transform: scaleY(1); }
+}
+
 /* ─── Controls ─── */
 .aib-controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 14px;
   padding: 16px 20px;
   background: var(--color-surface);
   border-top: 1px solid var(--color-border-light);
@@ -279,8 +340,8 @@
 
 .aib-mic-btn {
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   border: 3px solid var(--color-primary);
   background: var(--color-surface);
@@ -300,7 +361,13 @@
 .aib-mic-btn.active {
   background: var(--color-primary);
   border-color: var(--color-primary-dark);
-  box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.2);
+  box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.2), 0 0 20px rgba(45, 106, 79, 0.3);
+  animation: aib-mic-glow 1.5s ease-in-out infinite;
+}
+
+@keyframes aib-mic-glow {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.2), 0 0 20px rgba(45, 106, 79, 0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(45, 106, 79, 0.15), 0 0 30px rgba(45, 106, 79, 0.4); }
 }
 
 .aib-mic-btn.disabled {
@@ -309,7 +376,7 @@
 }
 
 .aib-mic-icon {
-  font-size: 24px;
+  font-size: 26px;
   z-index: 2;
   transition: filter 0.2s;
 }
@@ -333,7 +400,7 @@
 
 @keyframes aib-mic-pulse {
   0% { transform: scale(0.85); opacity: 0.7; }
-  100% { transform: scale(1.3); opacity: 0; }
+  100% { transform: scale(1.4); opacity: 0; }
 }
 
 .aib-stop-btn {
@@ -356,6 +423,33 @@
   color: white;
 }
 
+.aib-text-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.aib-text-toggle:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+}
+
+.aib-text-toggle.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: white;
+}
+
 .aib-listening-text {
   font-size: 13px;
   font-weight: 600;
@@ -368,11 +462,68 @@
   50% { opacity: 0.4; }
 }
 
+/* ─── Text Input Form ─── */
+.aib-text-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border-light);
+}
+
+.aib-text-input {
+  flex: 1;
+  padding: 10px 16px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-border-light);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.aib-text-input:focus {
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+}
+
+.aib-text-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.aib-text-send {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-primary);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.aib-text-send:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+  transform: scale(1.05);
+}
+
+.aib-text-send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 /* ─── Responsive ─── */
 @media (max-width: 480px) {
   .aib-fab {
-    bottom: 20px;
-    right: 20px;
+    bottom: 30px;
+    right: 24px;
     width: 56px;
     height: 56px;
   }

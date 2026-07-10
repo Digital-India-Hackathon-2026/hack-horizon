@@ -4,15 +4,27 @@ const SYSTEM_PROMPT = `You are AgriBot, an AI assistant for AgriQueue — a Smar
 
 Your role:
 - Help farmers with questions about crop procurement, booking slots, queue management, market prices, government schemes, seeds, weather, transport, and payments.
-- Answer in the SAME language the user speaks (Hindi, Telugu, Kannada, Tamil, Marathi, Odia, English, or any other language).
+- Answer in the EXACT SAME language the user speaks or writes in (Hindi, Telugu, Kannada, Tamil, Marathi, Odia, English, etc).
 - Be warm, respectful, and use simple language a farmer can understand.
-- If a question is about AgriQueue features, guide them through the platform.
-- If a question is about farming advice (crops, diseases, weather), give practical, actionable advice.
 - Keep responses concise (2-4 sentences max) so they can be spoken aloud clearly.
-- Never use markdown, bullet points, or special formatting — just plain spoken text.
-- If you don't know the answer, honestly say so and suggest they contact support.`;
+- Never use markdown, bullet points, or special formatting.
+
+CRITICAL: You must ALWAYS respond with a valid JSON object containing exactly two fields:
+1. "reply": Your spoken response text in the user's language.
+2. "lang": The BCP-47 language code of the user's language (e.g., "hi-IN", "en-US", "te-IN", "kn-IN", "ta-IN", "mr-IN", "or-IN").
+Do NOT wrap the JSON in markdown code blocks.`;
 
 const chatHistory = new Map();
+
+// Cleanup stale sessions every 30 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, val] of chatHistory) {
+    if (val._lastActivity && now - val._lastActivity > 30 * 60 * 1000) {
+      chatHistory.delete(key);
+    }
+  }
+}, 30 * 60 * 1000);
 
 const aiAgentController = {
   async chat(req, res) {
@@ -28,20 +40,25 @@ const aiAgentController = {
       }
 
       const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const model = genAI.getGenerativeModel({ 
+        model: 'gemini-2.5-flash',
+        systemInstruction: {
+          parts: [{ text: SYSTEM_PROMPT }]
+        }
+      });
 
       const sid = sessionId || 'default';
       if (!chatHistory.has(sid)) {
         chatHistory.set(sid, []);
       }
       const history = chatHistory.get(sid);
+      history._lastActivity = Date.now();
 
       if (history.length > 20) {
         history.splice(0, history.length - 20);
       }
 
       const chat = model.startChat({
-        systemInstruction: SYSTEM_PROMPT,
         history: history,
       });
 
@@ -49,13 +66,27 @@ const aiAgentController = {
       const response = await result.response;
       const text = response.text();
 
-      history.push({ role: 'user', parts: [{ text: message.trim() }] });
-      history.push({ role: 'model', parts: [{ text }] });
+      let parsed = { reply: text, lang: 'en-US' };
+      try {
+        const cleaned = text.replace(/```json/gi, '').replace(/```/g, '').trim();
+        parsed = JSON.parse(cleaned);
+      } catch (e) {
+        parsed.reply = text;
+      }
 
-      res.json({ reply: text, sessionId: sid });
+      history.push({ role: 'user', parts: [{ text: message.trim() }] });
+      history.push({ role: 'model', parts: [{ text: parsed.reply }] });
+
+      res.json({ reply: parsed.reply, lang: parsed.lang, sessionId: sid });
     } catch (error) {
-      console.error('AI Agent Error:', error);
-      res.status(500).json({ error: 'Failed to get AI response. Please try again.' });
+      console.error('AI Agent Error:', error.message || error);
+      if (error.message?.includes('API_KEY_INVALID') || error.message?.includes('api key')) {
+        return res.status(500).json({ error: 'Invalid API key. Please check GEMINI_API_KEY in .env file.' });
+      }
+      if (error.message?.includes('quota') || error.message?.includes('QUOTA_EXCEEDED')) {
+        return res.status(500).json({ error: 'API quota exceeded. Please try again later.' });
+      }
+      res.status(500).json({ error: 'Failed to get AI response. ' + (error.message || 'Unknown error') });
     }
   }
 };
