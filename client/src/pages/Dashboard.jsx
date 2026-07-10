@@ -9,6 +9,7 @@ export default function Dashboard() {
   const { t } = useTranslation();
   const { farmer } = useAuth();
   const [bookings, setBookings] = useState([]);
+  const [transportBookings, setTransportBookings] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -18,11 +19,13 @@ export default function Dashboard() {
 
   const loadData = async () => {
     try {
-      const [bookRes, notifRes] = await Promise.all([
+      const [bookRes, transportRes, notifRes] = await Promise.all([
         api.get('/bookings'),
+        api.get('/transport/my-bookings'),
         api.get('/notifications'),
       ]);
       setBookings(bookRes.data);
+      setTransportBookings(transportRes.data);
       setNotifications(notifRes.data);
     } catch (err) {
       console.error('Dashboard load error:', err);
@@ -42,6 +45,17 @@ export default function Dashboard() {
       cancelled: { class: 'badge-error', icon: '❌', label: t('common.cancel') },
     };
     const s = map[status] || map.booked;
+    return <span className={`badge ${s.class}`}>{s.icon} {s.label}</span>;
+  };
+
+  const getTransportStatusBadge = (status) => {
+    const map = {
+      pending: { class: 'badge-warning', icon: '⏳', label: 'Pending' },
+      confirmed: { class: 'badge-info', icon: '✅', label: 'Confirmed' },
+      completed: { class: 'badge-success', icon: '🚚', label: 'Completed' },
+      cancelled: { class: 'badge-error', icon: '❌', label: 'Cancelled' },
+    };
+    const s = map[status] || map.pending;
     return <span className={`badge ${s.class}`}>{s.icon} {s.label}</span>;
   };
 
@@ -119,6 +133,32 @@ export default function Dashboard() {
                           <p className="booking-meta">📅 {b.slot_date} | 🌾 {b.crop_type ? t(`dynamic.${b.crop_type}`, b.crop_type) : 'N/A'}</p>
                         </div>
                         {getStatusBadge(b.status)}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
+
+            {/* Transport Bookings */}
+            {transportBookings.length > 0 && (
+              <>
+                <h2 className="section-heading" style={{ marginTop: 24 }}>🚚 Transport Bookings ({transportBookings.length})</h2>
+                {transportBookings.map(tb => (
+                  <div key={tb.id} className="card booking-card">
+                    <div className="card-body">
+                      <div className="flex-between" style={{ marginBottom: '12px' }}>
+                        <div>
+                          <h3 className="booking-center" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            {tb.vehicle_name}
+                          </h3>
+                        </div>
+                        {getTransportStatusBadge(tb.status)}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', color: '#666', fontSize: '0.9rem' }}>
+                        <div><strong>Pickup:</strong> {tb.pickup_location}</div>
+                        <div><strong>Drop:</strong> {tb.drop_location}</div>
+                        <div><strong>Date:</strong> {new Date(tb.booking_date).toLocaleString()}</div>
                       </div>
                     </div>
                   </div>

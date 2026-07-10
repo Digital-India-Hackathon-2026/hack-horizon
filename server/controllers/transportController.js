@@ -1,4 +1,4 @@
-const { prepareRun } = require('../db');
+const { prepareRun, prepareAll } = require('../db');
 
 const bookTransport = async (req, res) => {
   try {
@@ -29,6 +29,21 @@ const bookTransport = async (req, res) => {
   }
 };
 
+const getMyBookings = async (req, res) => {
+  try {
+    const farmerId = req.user?.id || 1; 
+    const bookings = await prepareAll(
+      `SELECT * FROM transport_bookings WHERE farmer_id = ? ORDER BY booking_date DESC`,
+      [farmerId]
+    );
+    res.json(bookings);
+  } catch (error) {
+    console.error('Fetch transport bookings error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 module.exports = {
-  bookTransport
+  bookTransport,
+  getMyBookings
 };
