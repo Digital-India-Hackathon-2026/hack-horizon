@@ -12,6 +12,7 @@ export default function SeedsCatalog() {
   const [cartCount, setCartCount] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const [quantities, setQuantities] = useState({});
+  const [selectedSeed, setSelectedSeed] = useState(null);
 
   useEffect(() => {
     const fetchSeeds = async () => {
@@ -38,6 +39,7 @@ export default function SeedsCatalog() {
     const qty = quantities[id] || 1;
     setCartCount(c => c + qty);
     setCartItems(prev => [...prev, { seed_id: id, quantity: qty }]);
+    alert('Added to cart!');
   };
 
   const handleCheckout = async () => {
@@ -51,42 +53,19 @@ export default function SeedsCatalog() {
       }
     } catch (err) {
       console.error('Failed to place order:', err);
-      alert('Failed to place order.');
-    }
-  };
-
-  const handleBuyNow = async (seedId) => {
-    const qty = quantities[seedId] || 1;
-    const seed = seeds.find(s => s.id === seedId);
-    if (!confirm(`Buy ${qty} × ${seed?.name || 'this seed'} for ₹${(seed?.price || 0) * qty}?`)) return;
-    try {
-      const response = await api.post('/seeds/buy-now', { seed_id: seedId, quantity: qty });
-      if (response.data.success) {
-        setQuantities(prev => ({ ...prev, [seedId]: 1 }));
-        navigate(`/bill/${response.data.order_id}`);
-      }
-    } catch (err) {
-      console.error('Failed to place order:', err);
-      alert('Failed to place order. Please login first.');
+      alert('Failed to place order. Please login.');
     }
   };
 
   return (
-    <div className="page">
+    <div className="page" style={{ backgroundColor: '#0B0F13', minHeight: '100vh', color: '#fff', paddingTop: 32 }}>
       <div className="container">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-          <h1 className="page-title animate-in" style={{ margin: 0 }}>🌱 {t('seeds.title')}</h1>
-          <button className="btn btn-secondary" style={{ borderRadius: 'var(--radius-full)' }} onClick={handleCheckout}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+          <h1 className="page-title animate-in" style={{ margin: 0, color: '#E5E7EB', fontWeight: 600 }}>🌱 Seed Marketplace</h1>
+          <button className="btn" style={{ backgroundColor: '#065F46', color: 'white', borderRadius: '8px', padding: '10px 20px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }} onClick={handleCheckout}>
             🛒 Checkout ({cartCount})
           </button>
         </div>
-
-        <div className="form-group animate-in">
-          <input type="text" className="form-input" placeholder={t('seeds.search')} style={{ maxWidth: '100%', padding: '16px', fontSize: '1.1rem' }} />
-        </div>
-        
-        <p style={{ color: 'var(--color-text-secondary)', marginBottom: 16, fontWeight: 600 }}>Results</p>
-        <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', marginBottom: 24, marginTop: -12 }}>Check each product page for other buying options.</p>
 
         {loading ? (
           <div className="loading-page">
@@ -94,104 +73,117 @@ export default function SeedsCatalog() {
             <p>Loading catalog...</p>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {seeds.map((seed, i) => (
-              <div key={seed.id} className="card animate-slide-up" style={{ animationDelay: `${i * 0.1}s`, display: 'flex', flexDirection: 'row', padding: 24, background: 'var(--color-surface)' }}>
-              {/* Product Image */}
-              <div style={{ width: 220, height: 260, background: '#F8F9FA', borderRadius: 'var(--radius-sm)', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img src={seed.image} alt={seed.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-              
-              {/* Product Info */}
-              <div style={{ paddingLeft: 32, flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <h3 style={{ margin: '0 0 8px', color: '#0F1111', fontSize: '1.4rem', fontWeight: 500, lineHeight: 1.3 }}>
-                  {seed.name}
-                </h3>
-                
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, fontSize: '0.9rem' }}>
-                  <span style={{ color: '#DE7921', fontSize: '1.1rem' }}>★★★★☆</span>
-                  <span style={{ color: '#DE7921' }}>{seed.rating}</span>
-                  <span style={{ color: '#007185', marginLeft: 4 }}>({seed.reviews})</span>
-                </div>
-                
-                <p style={{ fontSize: '0.85rem', color: '#565959', margin: '0 0 12px' }}>
-                  100+ bought in past month
-                </p>
-
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 8 }}>
-                  <span style={{ fontSize: '1.8rem', fontWeight: 600, color: '#0F1111' }}>₹{seed.price}</span>
-                  <span style={{ fontSize: '0.9rem', color: '#565959', textDecoration: 'line-through' }}>M.R.P: ₹{seed.mrp}</span>
-                  <span style={{ fontSize: '0.9rem', color: '#CC0C39', fontWeight: 500 }}>({Math.round(((seed.mrp - seed.price) / seed.mrp) * 100)}% off)</span>
-                </div>
-                
-                <p style={{ fontSize: '0.9rem', color: '#565959', margin: '0 0 20px' }}>
-                  FREE delivery <strong>Tomorrow</strong><br />
-                  Sold by: <span style={{ color: '#007185' }}>{seed.supplier}</span>
-                </p>
-
-                <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 16 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #D5D9D9', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 2px 5px rgba(15,17,17,.15)', background: '#F0F2F2' }}>
-                      <button 
-                        type="button" 
-                        onClick={() => updateQuantity(seed.id, -1)} 
-                        style={{ padding: '8px 16px', background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: '#0F1111' }}
-                      >-</button>
-                      <span style={{ padding: '8px 20px', background: 'white', minWidth: 40, textAlign: 'center', fontWeight: '500', fontSize: '1rem', borderLeft: '1px solid #D5D9D9', borderRight: '1px solid #D5D9D9' }}>
-                        {quantities[seed.id] || 1}
-                      </span>
-                      <button 
-                        type="button" 
-                        onClick={() => updateQuantity(seed.id, 1)} 
-                        style={{ padding: '8px 16px', background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: '#0F1111' }}
-                      >+</button>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 24 }}>
+            {seeds.map((seed, i) => {
+              const tags = seed.tags ? (typeof seed.tags === 'string' ? JSON.parse(seed.tags) : seed.tags) : [];
+              return (
+                <div key={seed.id} className="card animate-slide-up" style={{ 
+                  animationDelay: `${i * 0.05}s`, 
+                  background: '#161B22', 
+                  border: '1px solid #30363D',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}>
+                  {/* Product Image */}
+                  <div style={{ position: 'relative', height: 200, width: '100%', backgroundColor: '#0D1117' }}>
+                    <img src={seed.image} alt={seed.name} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }} />
+                    
+                    {/* Badge */}
+                    {seed.badge && (
+                      <div style={{ position: 'absolute', top: 12, left: 12, background: '#10B981', color: '#000', padding: '4px 10px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 700 }}>
+                        {seed.badge}
+                      </div>
+                    )}
+                    
+                    {/* Rating */}
+                    <div style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(0,0,0,0.7)', color: '#FBBF24', padding: '4px 8px', borderRadius: '4px', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+                      ★ {seed.rating}
                     </div>
-                    <button 
-                      onClick={() => handleAddToCart(seed.id)}
-                      style={{ 
-                        background: '#FFD814', 
-                        color: '#0F1111', 
-                        border: 'none', 
-                        padding: '12px 32px', 
-                        borderRadius: '100px', 
-                        fontSize: '1rem', 
-                        fontWeight: 500, 
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 5px rgba(213,217,217,.5)',
-                        transition: 'background 0.2s'
-                      }}
-                      onMouseOver={(e) => e.target.style.background = '#F7CA00'}
-                      onMouseOut={(e) => e.target.style.background = '#FFD814'}
-                    >
-                      Add to cart
-                    </button>
-                    <button 
-                      onClick={() => handleBuyNow(seed.id)}
-                      style={{ 
-                        background: 'var(--color-primary)', 
-                        color: 'white', 
-                        border: 'none', 
-                        padding: '12px 24px', 
-                        borderRadius: '100px', 
-                        fontSize: '1rem', 
-                        fontWeight: 600, 
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 8px rgba(45,106,79,0.3)',
-                        transition: 'all 0.2s'
-                      }}
-                      onMouseOver={(e) => { e.target.style.background = 'var(--color-primary-dark)'; e.target.style.transform = 'translateY(-1px)'; }}
-                      onMouseOut={(e) => { e.target.style.background = 'var(--color-primary)'; e.target.style.transform = 'none'; }}
-                    >
-                      Buy Now
-                    </button>
+                  </div>
+                  
+                  {/* Product Info */}
+                  <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
+                      <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 600, color: '#F3F4F6', flex: 1 }}>{seed.name}</h3>
+                      <div style={{ color: '#06B6D4', fontSize: '1.25rem', fontWeight: 700, marginLeft: 12 }}>₹{seed.price}</div>
+                    </div>
+                    
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                      <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>{seed.supplier}</span>
+                      <span style={{ color: '#6B7280', fontSize: '0.75rem' }}>/pkt</span>
+                    </div>
+                    
+                    <p style={{ fontSize: '0.9rem', color: '#D1D5DB', margin: '0 0 16px', lineHeight: 1.4 }}>
+                      {seed.description || "High-quality seeds for optimal farming yield."}
+                    </p>
+
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 }}>
+                      {tags.map((tag, idx) => (
+                        <span key={idx} style={{ background: '#21262D', border: '1px solid #30363D', color: '#9CA3AF', padding: '4px 10px', borderRadius: '4px', fontSize: '0.75rem' }}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', background: '#21262D', borderRadius: '8px', overflow: 'hidden', border: '1px solid #30363D' }}>
+                        <button onClick={() => updateQuantity(seed.id, -1)} style={{ padding: '8px 12px', background: 'transparent', border: 'none', color: '#9CA3AF', cursor: 'pointer' }}>-</button>
+                        <span style={{ padding: '8px 4px', minWidth: '32px', textAlign: 'center', color: '#E5E7EB', fontSize: '0.9rem' }}>{quantities[seed.id] || 1}</span>
+                        <button onClick={() => updateQuantity(seed.id, 1)} style={{ padding: '8px 12px', background: 'transparent', border: 'none', color: '#9CA3AF', cursor: 'pointer' }}>+</button>
+                      </div>
+                      
+                      <div style={{ display: 'flex', gap: 8, flex: 1 }}>
+                        <button 
+                          onClick={() => setSelectedSeed(seed)}
+                          style={{ background: '#374151', color: '#F3F4F6', border: 'none', padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', flex: '1', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                          ℹ️ Info
+                        </button>
+                        <button 
+                          onClick={() => handleAddToCart(seed.id)}
+                          style={{ background: '#0F766E', color: 'white', border: 'none', padding: '10px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', flex: '2', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
+                        >
+                          <span>+</span> Add to Cart
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              );
+            })}
+          </div>
         )}
       </div>
+
+      {/* Details Modal */}
+      {selectedSeed && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }} onClick={() => setSelectedSeed(null)}>
+          <div style={{ background: '#161B22', border: '1px solid #30363D', borderRadius: '16px', padding: 32, maxWidth: 600, width: '100%', color: '#E5E7EB', position: 'relative' }} onClick={e => e.stopPropagation()}>
+            <button onClick={() => setSelectedSeed(null)} style={{ position: 'absolute', top: 16, right: 16, background: 'transparent', border: 'none', color: '#9CA3AF', fontSize: '1.5rem', cursor: 'pointer' }}>✕</button>
+            <h2 style={{ margin: '0 0 8px', color: '#10B981' }}>{selectedSeed.name}</h2>
+            <p style={{ color: '#9CA3AF', marginBottom: 24 }}>By {selectedSeed.supplier}</p>
+            
+            <h4 style={{ marginBottom: 8, color: '#F3F4F6' }}>Description</h4>
+            <p style={{ lineHeight: 1.6, color: '#D1D5DB', marginBottom: 24 }}>{selectedSeed.description}</p>
+            
+            <h4 style={{ marginBottom: 8, color: '#F3F4F6' }}>Benefits & How it works</h4>
+            <ul style={{ lineHeight: 1.6, color: '#D1D5DB', marginBottom: 24, paddingLeft: 20 }}>
+              <li><strong>High Germination Rate:</strong> Ensures maximum plant emergence for a successful crop.</li>
+              <li><strong>Disease Resistance:</strong> Genetically selected to withstand common local pests and blights.</li>
+              <li><strong>Optimal Yield:</strong> Provides superior yield compared to traditional seeds when used with proper irrigation.</li>
+            </ul>
+
+            <button 
+              onClick={() => { handleAddToCart(selectedSeed.id); setSelectedSeed(null); }}
+              style={{ background: '#0F766E', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '8px', cursor: 'pointer', fontSize: '1rem', fontWeight: 600, width: '100%' }}
+            >
+              Add to Cart - ₹{selectedSeed.price}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

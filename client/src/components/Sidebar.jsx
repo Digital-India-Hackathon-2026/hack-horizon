@@ -58,7 +58,6 @@ export default function Sidebar() {
       <aside className={`advanced-sidebar ${isOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <h3>🌾 AgriQueue</h3>
-          <button className="sidebar-close-btn" onClick={close}>✕</button>
         </div>
         <div className="sidebar-content">
           
