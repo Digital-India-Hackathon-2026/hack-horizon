@@ -13,7 +13,7 @@ const doctorController = {
       }
 
       const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro' });
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
       const prompt = `You are an expert agricultural AI doctor. Analyze this image of a crop/plant. 
       Identify any visible diseases, pests, or deficiencies. 
