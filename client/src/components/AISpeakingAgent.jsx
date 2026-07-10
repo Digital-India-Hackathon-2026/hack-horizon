@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Component } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Vapi from '@vapi-ai/web';
 import './AISpeakingAgent.css';
@@ -50,7 +50,9 @@ export default function AISpeakingAgent() {
 
   useEffect(() => {
     // Initialize Vapi inside useEffect to avoid top-level module errors
-    const vapi = new Vapi(import.meta.env.VITE_VAPI_PUBLIC_KEY || 'dummy_key');
+    // Use .default if the ESM wrapper didn't unwrap the CJS export properly
+    const VapiClass = Vapi.default || Vapi;
+    const vapi = new VapiClass(import.meta.env.VITE_VAPI_PUBLIC_KEY || 'dummy_key');
     vapiRef.current = vapi;
 
     // Vapi event listeners
