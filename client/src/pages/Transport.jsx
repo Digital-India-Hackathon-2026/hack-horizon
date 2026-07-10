@@ -12,7 +12,7 @@ export default function Transport() {
       price: 2500,
       unit: '/hr',
       rating: '4.8',
-      image: 'https://images.unsplash.com/photo-1579822981966-1c2ce0c279c4?w=400&q=80',
+      image: 'https://images.unsplash.com/photo-1579822981966-1c2ce0c279c4?w=300&q=30',
       tags: ['Spraying', 'Mapping']
     },
     {
@@ -22,7 +22,7 @@ export default function Transport() {
       price: 1200,
       unit: '/hr',
       rating: '4.9',
-      image: 'https://images.unsplash.com/photo-1592982537447-6f208c6e04d9?w=400&q=80',
+      image: 'https://images.unsplash.com/photo-1592982537447-6f208c6e04d9?w=300&q=30',
       tags: ['Tilling', 'Seeding']
     },
     {
@@ -32,7 +32,7 @@ export default function Transport() {
       price: 800,
       unit: '/hr',
       rating: '4.5',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&q=80',
+      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&q=30',
       tags: ['Picking', 'Sorting']
     },
     {
@@ -42,7 +42,7 @@ export default function Transport() {
       price: 1500,
       unit: '/hr',
       rating: '4.2',
-      image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=400&q=80',
+      image: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=300&q=30',
       tags: ['Cold Storage']
     }
   ];
@@ -80,7 +80,7 @@ export default function Transport() {
             }}>
               {/* Image */}
               <div style={{ position: 'relative', height: 200, backgroundColor: '#F8F9FA' }}>
-                <img src={asset.image} alt={asset.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src={asset.image} alt={asset.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 
                 {/* Rating */}
                 <div style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(255,255,255,0.9)', color: '#D97706', padding: '4px 8px', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4, boxShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>
