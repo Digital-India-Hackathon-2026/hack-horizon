@@ -51,12 +51,12 @@ export default function TransportBooking() {
 
   if (success) {
     return (
-      <div className="page" style={{ paddingTop: '60px', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-        <div className="animate-slide-up" style={{ background: 'linear-gradient(145deg, #ffffff, #f0fdf4)', padding: '50px 40px', borderRadius: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05)', textAlign: 'center', maxWidth: '450px', border: '1px solid #dcfce7' }}>
+      <div className="page" style={{ paddingTop: '60px', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', position: 'relative', overflow: 'hidden' }}>
+        <div className="animate-slide-up" style={{ background: 'linear-gradient(145deg, var(--color-surface), var(--color-primary-bg))', padding: '50px 40px', borderRadius: '24px', boxShadow: 'var(--shadow-xl)', textAlign: 'center', maxWidth: '450px', border: '1px solid var(--color-primary-light)', zIndex: 1, position: 'relative' }}>
           <div style={{ fontSize: '4rem', marginBottom: '16px', animation: 'pulse 2s infinite' }}>✅</div>
-          <h2 style={{ color: '#166534', margin: '0 0 12px', fontSize: '1.8rem', fontWeight: 700 }}>Booking Confirmed!</h2>
-          <p style={{ color: '#15803d', fontSize: '1.05rem', margin: '0 0 24px', lineHeight: 1.5 }}>Your transport request has been securely placed. Our driver will contact you shortly.</p>
-          <div style={{ display: 'inline-block', padding: '8px 16px', background: '#dcfce7', color: '#166534', borderRadius: '30px', fontSize: '0.9rem', fontWeight: 600 }}>
+          <h2 style={{ color: 'var(--color-primary-dark)', margin: '0 0 12px', fontSize: '1.8rem', fontWeight: 700 }}>Booking Confirmed!</h2>
+          <p style={{ color: 'var(--color-primary)', fontSize: '1.05rem', margin: '0 0 24px', lineHeight: 1.5 }}>Your transport request has been securely placed. Our driver will contact you shortly.</p>
+          <div style={{ display: 'inline-block', padding: '8px 16px', background: 'var(--color-primary-light)', color: 'white', borderRadius: '30px', fontSize: '0.9rem', fontWeight: 600 }}>
             Redirecting...
           </div>
         </div>
@@ -68,14 +68,15 @@ export default function TransportBooking() {
     <div className="page" style={{ 
       paddingTop: '60px', 
       paddingBottom: '60px', 
-      background: 'radial-gradient(circle at top left, #dcfce7 0%, #f9fafb 40%, #e0e7ff 100%)',
+      backgroundColor: 'var(--color-bg)',
+      backgroundImage: 'radial-gradient(at 0% 0%, rgba(45, 106, 79, 0.15) 0px, transparent 60%), radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.15) 0px, transparent 60%)',
       minHeight: 'calc(100vh - 64px)',
       position: 'relative',
       overflow: 'hidden'
     }}>
-      {/* Decorative background blur elements */}
-      <div style={{ position: 'absolute', top: '-100px', right: '-50px', width: '300px', height: '300px', background: '#bbf7d0', filter: 'blur(80px)', borderRadius: '50%', zIndex: 0, opacity: 0.6 }} />
-      <div style={{ position: 'absolute', bottom: '-50px', left: '-100px', width: '350px', height: '350px', background: '#c7d2fe', filter: 'blur(90px)', borderRadius: '50%', zIndex: 0, opacity: 0.5 }} />
+      {/* Decorative background blur elements mapped to theme colors */}
+      <div style={{ position: 'absolute', top: '-15%', right: '-10%', width: '400px', height: '400px', background: 'var(--color-primary-light)', filter: 'blur(100px)', borderRadius: '50%', zIndex: 0, opacity: 0.15 }} />
+      <div style={{ position: 'absolute', bottom: '-15%', left: '-10%', width: '450px', height: '450px', background: 'var(--color-accent)', filter: 'blur(120px)', borderRadius: '50%', zIndex: 0, opacity: 0.12 }} />
 
       <div className="container" style={{ maxWidth: '650px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
         
