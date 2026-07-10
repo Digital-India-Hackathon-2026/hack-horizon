@@ -72,6 +72,7 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/map" element={<MapView />} />
         <Route path="/prices" element={<MarketPrices />} />
+        <Route path="/mandi" element={<Navigate to="/book" replace />} />
         <Route path="/schemes" element={<Schemes />} />
         <Route path="/help" element={<Help />} />
         

@@ -70,12 +70,12 @@ export default function Dashboard() {
             <h1 className="dash-welcome">{t('dashboard.welcome')}, <span className="text-primary">{farmer?.name}</span>! 👋</h1>
             <p className="dash-subtitle">ID: {farmer?.farmer_id} | 📍 {farmer?.village || 'N/A'}</p>
           </div>
-          <Link to="/book" className="btn btn-primary">📅 {t('nav.book_slot')}</Link>
+          <Link to="/book" className="btn btn-primary">🏪 {t('nav.mandi_booking')}</Link>
         </div>
 
         {/* Quick Actions */}
         <div className="quick-actions animate-in" style={{ animationDelay: '0.1s' }}>
-          <Link to="/book" className="quick-card"><span className="quick-icon">📅</span><span>{t('nav.book_slot')}</span></Link>
+          <Link to="/book" className="quick-card"><span className="quick-icon">🏪</span><span>{t('nav.mandi_booking')}</span></Link>
           <Link to="/map" className="quick-card"><span className="quick-icon">🗺️</span><span>{t('nav.map')}</span></Link>
           <Link to="/prices" className="quick-card"><span className="quick-icon">💰</span><span>{t('nav.prices')}</span></Link>
           <Link to="/schemes" className="quick-card"><span className="quick-icon">📋</span><span>{t('nav.schemes')}</span></Link>
@@ -91,7 +91,7 @@ export default function Dashboard() {
                   <div className="empty-state-icon">📅</div>
                   <h3>{t('dashboard.no_bookings')}</h3>
                   <p>{t('dashboard.book_first')}</p>
-                  <Link to="/book" className="btn btn-primary" style={{ marginTop: 16 }}>📅 {t('nav.book_slot')}</Link>
+                  <Link to="/book" className="btn btn-primary" style={{ marginTop: 16 }}>🏪 {t('nav.mandi_booking')}</Link>
                 </div>
               </div>
             ) : (

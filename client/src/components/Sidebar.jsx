@@ -21,7 +21,7 @@ export default function Sidebar() {
   const coreFeatures = [
     ...(isAuthenticated ? [
       { path: '/dashboard', icon: '📊', label: 'nav.dashboard' },
-      { path: '/book', icon: '📅', label: 'nav.book_slot' },
+      { path: '/book', icon: '🏪', label: 'nav.mandi_booking' },
     ] : []),
     { path: '/map', icon: '🗺️', label: 'nav.map' },
     { path: '/prices', icon: '💰', label: 'nav.prices' },

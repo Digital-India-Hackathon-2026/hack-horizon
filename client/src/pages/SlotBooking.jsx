@@ -120,7 +120,7 @@ export default function SlotBooking() {
   return (
     <div className="page">
       <div className="container">
-        <h1 className="page-title animate-in">📅 {t('booking.title')}</h1>
+        <h1 className="page-title animate-in">🏪 {t('nav.mandi_booking', 'Mandi & Booking')}</h1>
 
         {/* Step 1: Select Center */}
         <div className="booking-step animate-in" style={{ animationDelay: '0.1s' }}>
@@ -142,6 +142,10 @@ export default function SlotBooking() {
                 <div className="card-body">
                   <h3>{c.name.replace('Mandi Center', t('dynamic.Mandi Center')).replace('Main Market Yard', t('dynamic.Main Market Yard'))}</h3>
                   <p className="center-addr">{c.address.replace('Main Market Yard', t('dynamic.Main Market Yard'))}</p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: '#6B7280', margin: '8px 0', borderBottom: '1px solid #E5E7EB', paddingBottom: '8px' }}>
+                    <span>🕐 {t('mandi.timing', 'Timing')}: <strong>{c.operating_hours || '08:00-17:00'}</strong></span>
+                    <span>📦 {t('mandi.capacity', 'Cap/slot')}: <strong>{c.capacity_per_slot}</strong></span>
+                  </div>
                   <div className="center-meta">
                     <span className="badge badge-primary">👥 {c.current_queue} {t('queue.in_queue')}</span>
                     <span className="badge badge-warning">⏱️ ~{c.estimated_wait_minutes} {t('queue.min')}</span>
