@@ -41,7 +41,7 @@ export default function TokenView() {
             <div style={{ display: 'grid', gap: 12 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid var(--color-border-light)' }}>
                 <span style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>📍 {t('token.center')}</span>
-                <strong>{booking.center_name}</strong>
+                <strong>{booking.center_name ? booking.center_name.replace('Mandi Center', t('dynamic.Mandi Center')).replace('Main Market Yard', t('dynamic.Main Market Yard')) : ''}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid var(--color-border-light)' }}>
                 <span style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>📅 {t('token.date')}</span>
@@ -54,19 +54,19 @@ export default function TokenView() {
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid var(--color-border-light)' }}>
                 <span style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>📊 {t('token.status')}</span>
                 <span className={`badge ${booking.status === 'completed' ? 'badge-success' : booking.status === 'in_progress' ? 'badge-accent' : booking.status === 'queued' ? 'badge-warning' : 'badge-info'}`}>
-                  {booking.status}
+                  {booking.status === 'in_progress' ? t('queue.serving') : booking.status === 'queued' ? t('queue.waiting') : booking.status === 'completed' ? t('queue.status_completed') : t('queue.status_booked')}
                 </span>
               </div>
               {booking.queue_position && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid var(--color-border-light)' }}>
-                  <span style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>🔢 Queue Position</span>
+                  <span style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>🔢 {t('queue.your_position')}</span>
                   <strong>#{booking.queue_position}</strong>
                 </div>
               )}
               {booking.crop_type && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0' }}>
-                  <span style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>🌾 Crop</span>
-                  <strong>{booking.crop_type}</strong>
+                  <span style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>🌾 {t('booking.crop_type')}</span>
+                  <strong>{t(`dynamic.${booking.crop_type}`, booking.crop_type)}</strong>
                 </div>
               )}
             </div>

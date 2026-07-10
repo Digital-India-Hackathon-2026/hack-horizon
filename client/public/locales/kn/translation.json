@@ -111,7 +111,18 @@
     "minutes": "minutes",
     "high": "High",
     "medium": "Medium",
-    "low": "Low"
+    "low": "Low",
+    "in_queue": "ಸರತಿಯಲ್ಲಿ",
+    "min": "ನಿಮಿಷ",
+    "today": "ಇಂದು",
+    "serving": "ಸೇವೆ ನೀಡಲಾಗುತ್ತಿದೆ",
+    "waiting": "ಕಾಯುತ್ತಿದ್ದೇವೆ",
+    "total": "ಒಟ್ಟು",
+    "done": "ಮುಗಿದಿದೆ",
+    "counters": "ಕೌಂಟರ್‌ಗಳು",
+    "no_one": "ಸರತಿಯಲ್ಲಿ ಯಾರು ಇಲ್ಲ",
+    "center_not_found": "ಕೇಂದ್ರ ಕಂಡುಬಂದಿಲ್ಲ",
+    "overview": "ಸರತಿ ಅವಲೋಕನ"
   },
   "map": {
     "title": "Procurement Centers",
@@ -233,5 +244,19 @@
     "date_time": "Scheduled Date & Time",
     "book": "Request Transport",
     "success": "Transport requested. A driver will confirm shortly."
+  },
+  "dynamic": {
+    "Rice": "ಅಕ್ಕಿ",
+    "Wheat": "ಗೋಧಿ",
+    "Maize": "ಮೆಕ್ಕೆಜೋಳ",
+    "Cotton": "ಹತ್ತಿ",
+    "Groundnut": "ಕಡಲೆಕಾಯಿ",
+    "Sugarcane": "ಕಬ್ಬು",
+    "Turmeric": "ಅರಿಶಿನ",
+    "Jowar": "ಜೋಳ",
+    "Soybean": "ಸೋಯಾಬೀನ್",
+    "Mustard": "ಸಾಸಿವೆ",
+    "Mandi Center": "ಮಂಡಿ ಕೇಂದ್ರ",
+    "Main Market Yard": "ಮುಖ್ಯ ಮಾರುಕಟ್ಟೆ ಪ್ರಾಂಗಣ"
   }
 }

@@ -112,7 +112,7 @@ export default function SlotBooking() {
             <input 
               type="text" 
               className="form-input" 
-              placeholder={t('map.search') || "Search mandi..."} 
+              placeholder={t('map.search')} 
               value={searchTerm} 
               onChange={e => setSearchTerm(e.target.value)} 
             />
@@ -122,15 +122,15 @@ export default function SlotBooking() {
             {filteredCenters.map(c => (
               <div key={c.id} className={`center-option card ${selectedCenter?.id === c.id ? 'selected' : ''}`} onClick={() => setSelectedCenter(c)}>
                 <div className="card-body">
-                  <h3>{c.name}</h3>
-                  <p className="center-addr">{c.address}</p>
+                  <h3>{c.name.replace('Mandi Center', t('dynamic.Mandi Center')).replace('Main Market Yard', t('dynamic.Main Market Yard'))}</h3>
+                  <p className="center-addr">{c.address.replace('Main Market Yard', t('dynamic.Main Market Yard'))}</p>
                   <div className="center-meta">
-                    <span className="badge badge-primary">👥 {c.current_queue} in queue</span>
-                    <span className="badge badge-warning">⏱️ ~{c.estimated_wait_minutes} min</span>
+                    <span className="badge badge-primary">👥 {c.current_queue} {t('queue.in_queue')}</span>
+                    <span className="badge badge-warning">⏱️ ~{c.estimated_wait_minutes} {t('queue.min')}</span>
                   </div>
                   <div className="center-crops">
                     {(c.crops_accepted || []).map((crop, i) => (
-                      <span key={i} className="crop-tag">🌾 {crop}</span>
+                      <span key={i} className="crop-tag">🌾 {t(`dynamic.${crop}`, crop)}</span>
                     ))}
                   </div>
                 </div>
@@ -147,7 +147,7 @@ export default function SlotBooking() {
               {getNextDays().map(d => (
                 <button key={d.value} className={`date-btn ${selectedDate === d.value ? 'selected' : ''}`} onClick={() => setSelectedDate(d.value)}>
                   <span className="date-label">{d.label}</span>
-                  {d.isToday && <span className="date-today">Today</span>}
+                  {d.isToday && <span className="date-today">{t('queue.today')}</span>}
                 </button>
               ))}
             </div>
@@ -182,8 +182,8 @@ export default function SlotBooking() {
                   <div className="form-group">
                     <label className="form-label">{t('booking.crop_type')}</label>
                     <select className="form-select" value={cropType} onChange={e => setCropType(e.target.value)}>
-                      <option value="">-- Select --</option>
-                      {(selectedCenter.crops_accepted || []).map(c => <option key={c} value={c}>{c}</option>)}
+                      <option value="">-- {t('common.select', 'Select')} --</option>
+                      {(selectedCenter.crops_accepted || []).map(c => <option key={c} value={c}>{t(`dynamic.${c}`, c)}</option>)}
                     </select>
                   </div>
                   <div className="form-group">

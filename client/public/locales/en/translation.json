@@ -111,7 +111,18 @@
     "minutes": "minutes",
     "high": "High",
     "medium": "Medium",
-    "low": "Low"
+    "low": "Low",
+    "in_queue": "in queue",
+    "min": "min",
+    "today": "Today",
+    "serving": "Serving",
+    "waiting": "Waiting",
+    "total": "total",
+    "done": "done",
+    "counters": "counters",
+    "no_one": "No one in queue",
+    "center_not_found": "Center not found",
+    "overview": "Queue Overview"
   },
   "map": {
     "title": "Procurement Centers",
@@ -233,5 +244,19 @@
     "date_time": "Scheduled Date & Time",
     "book": "Request Transport",
     "success": "Transport requested. A driver will confirm shortly."
+  },
+  "dynamic": {
+    "Rice": "Rice",
+    "Wheat": "Wheat",
+    "Maize": "Maize",
+    "Cotton": "Cotton",
+    "Groundnut": "Groundnut",
+    "Sugarcane": "Sugarcane",
+    "Turmeric": "Turmeric",
+    "Jowar": "Jowar",
+    "Soybean": "Soybean",
+    "Mustard": "Mustard",
+    "Mandi Center": "Mandi Center",
+    "Main Market Yard": "Main Market Yard"
   }
 }

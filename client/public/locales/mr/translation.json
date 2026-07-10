@@ -111,7 +111,18 @@
     "minutes": "minutes",
     "high": "High",
     "medium": "Medium",
-    "low": "Low"
+    "low": "Low",
+    "in_queue": "रांगेत",
+    "min": "मिनिटे",
+    "today": "आज",
+    "serving": "सेवा देत आहे",
+    "waiting": "प्रतीक्षेत",
+    "total": "एकूण",
+    "done": "पूर्ण",
+    "counters": "काउंटर",
+    "no_one": "रांगेत कोणीही नाही",
+    "center_not_found": "केंद्र सापडले नाही",
+    "overview": "रांग विहंगावलोकन"
   },
   "map": {
     "title": "Procurement Centers",
@@ -233,5 +244,19 @@
     "date_time": "Scheduled Date & Time",
     "book": "Request Transport",
     "success": "Transport requested. A driver will confirm shortly."
+  },
+  "dynamic": {
+    "Rice": "तांदूळ",
+    "Wheat": "गहू",
+    "Maize": "मका",
+    "Cotton": "कापूस",
+    "Groundnut": "भुईमूग",
+    "Sugarcane": "ऊस",
+    "Turmeric": "हळद",
+    "Jowar": "ज्वारी",
+    "Soybean": "सोयाबीन",
+    "Mustard": "मोहरी",
+    "Mandi Center": "मंडी केंद्र",
+    "Main Market Yard": "मुख्य बाजार यार्ड"
   }
 }

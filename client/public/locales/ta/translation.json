@@ -111,7 +111,18 @@
     "minutes": "minutes",
     "high": "High",
     "medium": "Medium",
-    "low": "Low"
+    "low": "Low",
+    "in_queue": "வரிசையில்",
+    "min": "நிமிடங்கள்",
+    "today": "இன்று",
+    "serving": "சேவை",
+    "waiting": "காத்திருப்பு",
+    "total": "மொத்தம்",
+    "done": "முடிந்தது",
+    "counters": "கவுண்டர்கள்",
+    "no_one": "வரிசையில் யாரும் இல்லை",
+    "center_not_found": "மையம் காணவில்லை",
+    "overview": "வரிசை கண்ணோட்டம்"
   },
   "map": {
     "title": "Procurement Centers",
@@ -233,5 +244,19 @@
     "date_time": "Scheduled Date & Time",
     "book": "Request Transport",
     "success": "Transport requested. A driver will confirm shortly."
+  },
+  "dynamic": {
+    "Rice": "அரிசி",
+    "Wheat": "கோதுமை",
+    "Maize": "மக்காச்சோளம்",
+    "Cotton": "பருத்தி",
+    "Groundnut": "நிலக்கடலை",
+    "Sugarcane": "கரும்பு",
+    "Turmeric": "மஞ்சள்",
+    "Jowar": "சோளம்",
+    "Soybean": "சோயாபீன்",
+    "Mustard": "கடுகு",
+    "Mandi Center": "மண்டி மையம்",
+    "Main Market Yard": "முக்கிய சந்தை வளாகம்"
   }
 }

@@ -39,7 +39,7 @@ export default function QueueTracker() {
   }, [centerId]);
 
   if (loading) return <div className="loading-page"><div className="spinner" /><p>{t('common.loading')}</p></div>;
-  if (!queueData) return <div className="loading-page"><p>Center not found</p></div>;
+  if (!queueData) return <div className="loading-page"><p>{t('queue.center_not_found')}</p></div>;
 
   const statuses = ['booked', 'queued', 'in_progress', 'completed'];
   const myStatus = myPosition?.status || 'booked';
@@ -53,7 +53,7 @@ export default function QueueTracker() {
           <div className="card-body">
             <div className="flex-between">
               <div>
-                <h1 style={{ fontSize: 'var(--font-size-xl)', fontWeight: 700 }}>📍 {queueData.center_name}</h1>
+                <h1 style={{ fontSize: 'var(--font-size-xl)', fontWeight: 700 }}>📍 {queueData.center_name.replace('Mandi Center', t('dynamic.Mandi Center')).replace('Main Market Yard', t('dynamic.Main Market Yard'))}</h1>
                 <span className={`badge ${queueData.is_open ? 'badge-success' : 'badge-error'}`} style={{ marginTop: 4 }}>
                   {queueData.is_open ? `🟢 ${t('map.open')}` : `🔴 ${t('map.closed')}`}
                 </span>
@@ -114,24 +114,24 @@ export default function QueueTracker() {
         {/* Queue Overview */}
         <div className="card animate-in" style={{ animationDelay: '0.2s' }}>
           <div className="card-header">
-            <span>📊 Queue Overview</span>
+            <span>📊 {t('queue.overview')}</span>
             <div style={{ display: 'flex', gap: 12, fontSize: 'var(--font-size-sm)' }}>
-              <span>👥 {queueData.queue.total} total</span>
-              <span>✅ {queueData.queue.completed_today} done</span>
-              <span>🖥️ {queueData.active_counters} counters</span>
+              <span>👥 {queueData.queue.total} {t('queue.total')}</span>
+              <span>✅ {queueData.queue.completed_today} {t('queue.done')}</span>
+              <span>🖥️ {queueData.active_counters} {t('queue.counters')}</span>
             </div>
           </div>
           <div className="card-body" style={{ padding: 0 }}>
             {queueData.queue.positions.length === 0 ? (
-              <div className="empty-state" style={{ padding: 32 }}><p>No one in queue</p></div>
+              <div className="empty-state" style={{ padding: 32 }}><p>{t('queue.no_one')}</p></div>
             ) : (
               queueData.queue.positions.map((p, i) => (
                 <div key={i} className={`queue-row ${p.status === 'in_progress' ? 'serving' : ''}`}>
                   <span className="queue-pos">#{p.position}</span>
                   <span className="queue-name">{p.farmer_name}</span>
-                  <span style={{ color: 'var(--color-text-muted)', fontSize: 12 }}>{p.crop}</span>
+                  <span style={{ color: 'var(--color-text-muted)', fontSize: 12 }}>{t(`dynamic.${p.crop}`, p.crop)}</span>
                   <span className={`badge ${p.status === 'in_progress' ? 'badge-success' : p.status === 'queued' ? 'badge-warning' : 'badge-info'}`}>
-                    {p.status === 'in_progress' ? '🔔 Serving' : p.status === 'queued' ? '⏳ Waiting' : '📅 Booked'}
+                    {p.status === 'in_progress' ? `🔔 ${t('queue.serving')}` : p.status === 'queued' ? `⏳ ${t('queue.waiting')}` : `📅 ${t('queue.status_booked')}`}
                   </span>
                 </div>
               ))

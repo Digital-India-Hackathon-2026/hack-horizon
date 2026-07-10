@@ -86,8 +86,8 @@ export default function Dashboard() {
                   <div className="card-body">
                     <div className="flex-between">
                       <div>
-                        <h3 className="booking-center">{b.center_name}</h3>
-                        <p className="booking-meta">📅 {b.slot_date} | ⏰ {b.slot_time} | 🌾 {b.crop_type || 'N/A'}</p>
+                        <h3 className="booking-center">{b.center_name ? b.center_name.replace('Mandi Center', t('dynamic.Mandi Center')).replace('Main Market Yard', t('dynamic.Main Market Yard')) : ''}</h3>
+                        <p className="booking-meta">📅 {b.slot_date} | ⏰ {b.slot_time} | 🌾 {b.crop_type ? t(`dynamic.${b.crop_type}`, b.crop_type) : 'N/A'}</p>
                       </div>
                       {getStatusBadge(b.status)}
                     </div>
@@ -115,8 +115,8 @@ export default function Dashboard() {
                     <div className="card-body">
                       <div className="flex-between">
                         <div>
-                          <h3 className="booking-center">{b.center_name}</h3>
-                          <p className="booking-meta">📅 {b.slot_date} | 🌾 {b.crop_type || 'N/A'}</p>
+                          <h3 className="booking-center">{b.center_name ? b.center_name.replace('Mandi Center', t('dynamic.Mandi Center')).replace('Main Market Yard', t('dynamic.Main Market Yard')) : ''}</h3>
+                          <p className="booking-meta">📅 {b.slot_date} | 🌾 {b.crop_type ? t(`dynamic.${b.crop_type}`, b.crop_type) : 'N/A'}</p>
                         </div>
                         {getStatusBadge(b.status)}
                       </div>
