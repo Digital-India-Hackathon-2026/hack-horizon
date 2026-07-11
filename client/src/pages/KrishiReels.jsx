@@ -4,30 +4,75 @@ import './KrishiReels.css';
 const REELS_DATA = [
   {
     id: 1,
-    url: 'https://assets.mixkit.co/videos/preview/mixkit-farmer-walking-in-a-field-of-wheat-44225-large.mp4',
-    title: 'Modern Wheat Farming',
-    description: 'Learn how modern tools help increase wheat yield by 20% this season! 🌾🚜',
+    url: '/reels/reel1.mp4',
+    title: 'Farmer Success Story',
+    description: 'A quick look into the daily life and success of our local farmers! 🌾🚜',
     author: '@AgriTech_India',
     likes: '12.4k',
     comments: '342'
   },
   {
     id: 2,
-    url: 'https://assets.mixkit.co/videos/preview/mixkit-farmer-examining-wheat-ears-44228-large.mp4',
-    title: 'Crop Inspection Tips',
-    description: 'Always check the roots and early leaves for signs of pest damage. Early detection saves crops! 🐛🔍',
+    url: '/reels/reel2.mp4',
+    title: 'Modern Techniques',
+    description: 'Implementing modern techniques to increase yield and reduce water usage. 💧🌱',
     author: '@KisanExpert',
     likes: '8.1k',
     comments: '128'
   },
   {
     id: 3,
-    url: 'https://assets.mixkit.co/videos/preview/mixkit-tractor-harvesting-in-a-wheat-field-44231-large.mp4',
-    title: 'Efficient Harvesting',
-    description: 'See the new heavy-duty harvester in action on a 50-acre farm in Punjab. 🚜💪',
+    url: '/reels/reel3.mp4',
+    title: 'Crop Inspection',
+    description: 'Always check the roots and early leaves for signs of pest damage. 🐛🔍',
     author: '@FarmMachinery',
     likes: '45.2k',
     comments: '1.2k'
+  },
+  {
+    id: 4,
+    url: '/reels/reel4.mp4',
+    title: 'Organic Farming',
+    description: 'Going organic! Here is how we prepare our natural fertilizers. 🍃🐄',
+    author: '@OrganicKisan',
+    likes: '22.1k',
+    comments: '550'
+  },
+  {
+    id: 5,
+    url: '/reels/reel5.mp4',
+    title: 'Harvest Season',
+    description: 'The golden fields are ready! Harvest season is the best season. 🌾🌾',
+    author: '@PunjabFarms',
+    likes: '33.4k',
+    comments: '890'
+  },
+  {
+    id: 6,
+    url: '/reels/reel6.mp4',
+    title: 'Smart Irrigation',
+    description: 'Setting up drip irrigation to save water and money. Every drop counts! 💦🌿',
+    author: '@SmartAgri',
+    likes: '15.6k',
+    comments: '210'
+  },
+  {
+    id: 7,
+    url: '/reels/reel7.mp4',
+    title: 'Soil Health',
+    description: 'Healthy soil means healthy crops. Learn how to test your soil pH! 🧪🌱',
+    author: '@SoilDocs',
+    likes: '9.2k',
+    comments: '105'
+  },
+  {
+    id: 8,
+    url: '/reels/reel8.mp4',
+    title: 'Market Day',
+    description: 'Taking our fresh produce to the Mandi. Hard work pays off! 🍅🥕💵',
+    author: '@KisanMitra',
+    likes: '50.1k',
+    comments: '2.4k'
   }
 ];
 
