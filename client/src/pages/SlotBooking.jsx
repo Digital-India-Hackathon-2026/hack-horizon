@@ -4,6 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import './SlotBooking.css';
 
+const formatTime12h = (timeStr) => {
+  if (!timeStr) return '';
+  const [h, m] = timeStr.split(':');
+  let hour = parseInt(h, 10);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  hour = hour % 12;
+  if (hour === 0) hour = 12;
+  return `${hour}:${m} ${ampm}`;
+};
+
 export default function SlotBooking() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -97,7 +107,7 @@ export default function SlotBooking() {
               <div style={{ fontSize: 64, marginBottom: 16 }}>✅</div>
               <h2>{t('booking.success')}</h2>
               <p style={{ margin: '12px 0', color: 'var(--color-text-secondary)' }}>
-                {success.center_name} | {success.booking.slot_date} | {success.booking.slot_time}
+                {success.center_name} | {success.booking.slot_date} | {formatTime12h(success.booking.slot_time)}
               </p>
               <div className="token-display">
                 <span className="token-label">{t('token.token_number')}</span>
@@ -184,7 +194,7 @@ export default function SlotBooking() {
               {slots.map(s => (
                 <button key={s.time} className={`slot-btn ${selectedSlot === s.time ? 'selected' : ''} ${s.available <= 0 ? 'full' : ''}`}
                   onClick={() => s.available > 0 && setSelectedSlot(s.time)} disabled={s.available <= 0}>
-                  <span className="slot-time">{s.time}</span>
+                  <span className="slot-time">{formatTime12h(s.time)}</span>
                   <span className={`slot-avail ${s.available <= 3 ? 'low' : ''}`}>
                     {s.available > 0 ? `${s.available} ${t('booking.available')}` : t('booking.full')}
                   </span>
@@ -217,7 +227,7 @@ export default function SlotBooking() {
                 <div className="confirm-summary">
                   <div><strong>📍 {t('token.center')}:</strong> {selectedCenter.name}</div>
                   <div><strong>📅 {t('token.date')}:</strong> {selectedDate}</div>
-                  <div><strong>⏰ {t('token.time')}:</strong> {selectedSlot}</div>
+                  <div><strong>⏰ {t('token.time')}:</strong> {formatTime12h(selectedSlot)}</div>
                   {cropType && <div><strong>🌾 {t('booking.crop_type')}:</strong> {cropType}</div>}
                 </div>
 

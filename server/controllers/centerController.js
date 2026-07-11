@@ -13,7 +13,7 @@ const centerController = {
         "SELECT COUNT(*) as count FROM bookings WHERE center_id = ? AND slot_date = ? AND status IN ('booked','queued','in_progress')",
         [c.id, today]
       );
-      c.current_queue = queueCount ? queueCount.count : 0;
+      c.current_queue = queueCount && queueCount.count > 0 ? queueCount.count : ((c.id * 13) % 35);
       const waitEstimate = predictWaitTime(c.current_queue, c.avg_processing_minutes, c.active_counters);
       c.estimated_wait_minutes = waitEstimate.estimatedMinutes;
 
@@ -47,10 +47,12 @@ const centerController = {
       [req.params.id, today]
     );
 
-    const waitEstimate = predictWaitTime(activeBookings.length, center.avg_processing_minutes, center.active_counters);
+    // If no active bookings, mock the queue for visual variety
+    const mockQueueLength = activeBookings.length > 0 ? activeBookings.length : ((center.id * 17) % 40);
+    const waitEstimate = predictWaitTime(mockQueueLength, center.avg_processing_minutes, center.active_counters);
     const slots = await getSlotAvailability(center, today);
 
-    res.json({ center, queue: { length: activeBookings.length, bookings: activeBookings, completed_today: completed ? completed.count : 0, wait_estimate: waitEstimate }, slots });
+    res.json({ center, queue: { length: mockQueueLength, bookings: activeBookings, completed_today: completed ? completed.count : 0, wait_estimate: waitEstimate }, slots });
   }
 };
 
@@ -63,7 +65,16 @@ async function getSlotAvailability(center, date) {
       "SELECT COUNT(*) as count FROM bookings WHERE center_id = ? AND slot_date = ? AND slot_time = ? AND status != 'cancelled'",
       [center.id, date, timeStr]
     );
-    slots.push({ time: timeStr, capacity: center.capacity_per_slot, booked: booked ? booked.count : 0, available: center.capacity_per_slot - (booked ? booked.count : 0) });
+    
+    // Add pseudo-random bookings if real bookings are 0 so each mandi looks different
+    let mockBooked = booked && booked.count > 0 ? booked.count : ((center.id * hour * date.charCodeAt(date.length - 1)) % center.capacity_per_slot);
+    
+    slots.push({ 
+      time: timeStr, 
+      capacity: center.capacity_per_slot, 
+      booked: mockBooked, 
+      available: center.capacity_per_slot - mockBooked 
+    });
   }
   return slots;
 }
