@@ -46,15 +46,20 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// Initialize database then start server
-async function start() {
-  await getDb();
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`\n  🌾 AgriQueue API Server running on http://localhost:${PORT}\n`);
+// Vercel Serverless Function Support
+if (process.env.VERCEL) {
+  module.exports = app;
+} else {
+  // Initialize database then start server locally
+  async function start() {
+    await getDb();
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`\n  🌾 AgriQueue API Server running on http://localhost:${PORT}\n`);
+    });
+  }
+
+  start().catch(err => {
+    console.error('Failed to start server:', err);
+    process.exit(1);
   });
 }
-
-start().catch(err => {
-  console.error('Failed to start server:', err);
-  process.exit(1);
-});
