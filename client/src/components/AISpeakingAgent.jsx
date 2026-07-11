@@ -59,6 +59,37 @@ export default function AISpeakingAgent() {
     vapi.on('call-start', () => setCallStatus('active'));
     vapi.on('call-end', () => setCallStatus('inactive'));
     vapi.on('message', (message) => {
+      // Handle modern Vapi 'tool-calls' API
+      if (message.type === 'tool-calls') {
+        message.toolCalls.forEach((toolCall) => {
+          if (toolCall.function.name === 'navigate') {
+            try {
+              const params = typeof toolCall.function.arguments === 'string' 
+                ? JSON.parse(toolCall.function.arguments) 
+                : toolCall.function.arguments;
+              
+              const page = params.page;
+              if (page === 'book_slot') navigate('/book');
+              else if (page === 'prices') navigate('/prices');
+              else if (page === 'map') navigate('/map');
+              else if (page === 'schemes') navigate('/schemes');
+              else if (page === 'help') navigate('/help');
+              else if (page === 'home') navigate('/');
+              else if (page === 'dashboard') navigate('/dashboard');
+              else if (page === 'seeds') navigate('/seeds');
+              else if (page === 'ai_doctor') navigate('/ai-doctor');
+              else if (page === 'weather') navigate('/weather');
+              else if (page === 'transport') navigate('/transport');
+              else if (page === 'book_transport') navigate('/book-transport');
+              else if (page === 'transactions') navigate('/transactions');
+            } catch (e) {
+              console.error("Failed to parse tool call arguments", e);
+            }
+          }
+        });
+      }
+      
+      // Fallback for older Vapi SDK 'function-call' API
       if (message.type === 'function-call' && message.functionCall.name === 'navigate') {
         const { page } = message.functionCall.parameters;
         if (page === 'book_slot') navigate('/book');
@@ -74,13 +105,6 @@ export default function AISpeakingAgent() {
         else if (page === 'transport') navigate('/transport');
         else if (page === 'book_transport') navigate('/book-transport');
         else if (page === 'transactions') navigate('/transactions');
-        
-        // Let Vapi know the function completed
-        vapi.send({
-          type: 'function-call-result',
-          functionCallId: message.functionCall.id,
-          result: `Successfully navigated to ${page}.`
-        });
       }
     });
 
