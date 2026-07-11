@@ -1,11 +1,14 @@
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:5000/api';
+// For Vercel, the API and frontend share the same domain, so we just use /api
+const API_BASE = import.meta.env.PROD ? '/api' : 'http://localhost:5000/api';
 
 const api = axios.create({
   baseURL: API_BASE,
   timeout: 30000,
-  headers: { 'Content-Type': 'application/json' },
+  headers: { 
+    'Content-Type': 'application/json'
+  },
 });
 
 // Add auth token to requests
