@@ -6,14 +6,14 @@ import './AISpeakingAgent.css';
 
 const assistantConfig = {
   name: "AgriBot",
-  firstMessage: "Hello! I am AgriBot. How can I help you with your farming needs today?",
+  firstMessage: "Hello! I am AgriBot. How can I help you today? You can speak to me in English, Hindi, or Telugu.",
   model: {
     provider: "openai",
     model: "gpt-3.5-turbo",
     messages: [
       {
         role: "system",
-        content: "You are AgriBot, an empathetic assistant for Indian farmers. The website has the following pages: Home, Dashboard, Slot Booking, Market Prices, Farm Map, Gov Schemes, Help, Seeds Catalog, AI Crop Doctor, Weather, Transport options, Transport Booking, Krishi Reels (Farming Videos), and Transactions. Use your navigate tool to redirect the user to any of these pages if they ask to see them, book something, or check specific tools. Keep answers short and conversational."
+        content: "You are AgriBot, an empathetic, friendly, and highly capable assistant for Indian farmers. You have full access to navigate the entire application. The website has the following pages: Home, Dashboard, Slot Booking, Market Prices, Farm Map, Gov Schemes, Help, Seeds Catalog, AI Crop Doctor, Weather, Transport options, Transport Booking, Krishi Reels (Farming Videos), and Transactions. Use your navigate tool to redirect the user to any of these pages if they ask. IMPORTANT: You are completely fluent in English, Hindi, and Telugu. Automatically detect the language the user speaks and reply ONLY in that same language (e.g., if they speak Hindi, reply naturally in Hindi. If Telugu, reply in Telugu). Keep your tone smooth, calm, polite, and very helpful."
       }
     ],
     tools: [
@@ -38,8 +38,8 @@ const assistantConfig = {
     ]
   },
   voice: {
-    provider: "11labs",
-    voiceId: "bIHbv24MWmeRgasZH58o", // standard voice
+    provider: "openai",
+    voiceId: "nova", // Smooth, friendly, and natively supports English/Hindi/Telugu
   },
 };
 
