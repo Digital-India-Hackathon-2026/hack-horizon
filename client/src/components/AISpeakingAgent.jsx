@@ -13,7 +13,7 @@ const assistantConfig = {
     messages: [
       {
         role: "system",
-        content: "You are AgriBot, an empathetic assistant for Indian farmers. Guide them through booking a Mandi slot, checking crop prices, exploring government schemes, or diagnosing plant diseases. Keep answers short and conversational."
+        content: "You are AgriBot, an empathetic assistant for Indian farmers. The website has the following pages: Home, Dashboard, Slot Booking, Market Prices, Farm Map, Gov Schemes, Help, Seeds Catalog, AI Crop Doctor, Weather, Transport options, Transport Booking, and Transactions. Use your navigate tool to redirect the user to any of these pages if they ask to see them, book something, or check specific tools. Keep answers short and conversational."
       }
     ],
     tools: [
@@ -28,7 +28,7 @@ const assistantConfig = {
               page: {
                 type: "string",
                 description: "The page to navigate to.",
-                enum: ["book_slot", "prices", "map", "schemes", "help"]
+                enum: ["home", "dashboard", "book_slot", "prices", "map", "schemes", "help", "seeds", "ai_doctor", "weather", "transport", "book_transport", "transactions"]
               }
             },
             required: ["page"]
@@ -66,6 +66,14 @@ export default function AISpeakingAgent() {
         else if (page === 'map') navigate('/map');
         else if (page === 'schemes') navigate('/schemes');
         else if (page === 'help') navigate('/help');
+        else if (page === 'home') navigate('/');
+        else if (page === 'dashboard') navigate('/dashboard');
+        else if (page === 'seeds') navigate('/seeds');
+        else if (page === 'ai_doctor') navigate('/ai-doctor');
+        else if (page === 'weather') navigate('/weather');
+        else if (page === 'transport') navigate('/transport');
+        else if (page === 'book_transport') navigate('/book-transport');
+        else if (page === 'transactions') navigate('/transactions');
         
         // Let Vapi know the function completed
         vapi.send({
