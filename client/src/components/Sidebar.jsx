@@ -31,6 +31,7 @@ export default function Sidebar() {
   const advancedFeatures = [
 
     { path: '/seeds', icon: '🌱', label: 'sidebar.buy_seeds' },
+    { path: '/reels', icon: '📱', label: 'Krishi Reels' },
     ...(isAuthenticated ? [
       { path: '/transactions', icon: '💳', label: 'My Transactions' },
     ] : []),

@@ -1,0 +1,172 @@
+.krishi-reels-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 70px); /* Adjust based on navbar height */
+  background: var(--bg-dark, #0f172a);
+  color: white;
+  overflow: hidden;
+}
+
+.reels-header {
+  padding: 15px 20px;
+  background: linear-gradient(135deg, var(--primary-color, #10b981), var(--secondary-color, #047857));
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.reels-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.reels-header p {
+  margin: 5px 0 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* The vertical scroll container with snapping */
+.reels-scroll-container {
+  flex: 1;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  /* Hide scrollbar for a cleaner look */
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+}
+
+.reels-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.reel-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reel-video {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.play-button-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+  color: rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+  filter: drop-shadow(0 2px 10px rgba(0,0,0,0.5));
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+}
+
+.reel-ui {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 80px 20px 30px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none; /* Let clicks pass through to video */
+}
+
+.reel-info {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.reel-info h3 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+.reel-info h4 {
+  margin: 0 0 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--primary-light, #34d399);
+}
+
+.reel-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  opacity: 0.9;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+.reel-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  pointer-events: auto; /* Re-enable clicks for buttons */
+}
+
+.action-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.action-button:hover {
+  transform: scale(1.1);
+}
+
+.action-button .icon {
+  font-size: 1.8rem;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+}
+
+.action-button .icon.liked {
+  animation: heartPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.action-button span:last-child {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .krishi-reels-page {
+    /* Limit width on desktop to look more like a phone */
+    max-width: 500px;
+    margin: 0 auto;
+    border-left: 1px solid rgba(255,255,255,0.1);
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+}

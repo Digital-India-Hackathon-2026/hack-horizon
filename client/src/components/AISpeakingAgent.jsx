@@ -13,7 +13,7 @@ const assistantConfig = {
     messages: [
       {
         role: "system",
-        content: "You are AgriBot, an empathetic assistant for Indian farmers. The website has the following pages: Home, Dashboard, Slot Booking, Market Prices, Farm Map, Gov Schemes, Help, Seeds Catalog, AI Crop Doctor, Weather, Transport options, Transport Booking, and Transactions. Use your navigate tool to redirect the user to any of these pages if they ask to see them, book something, or check specific tools. Keep answers short and conversational."
+        content: "You are AgriBot, an empathetic assistant for Indian farmers. The website has the following pages: Home, Dashboard, Slot Booking, Market Prices, Farm Map, Gov Schemes, Help, Seeds Catalog, AI Crop Doctor, Weather, Transport options, Transport Booking, Krishi Reels (Farming Videos), and Transactions. Use your navigate tool to redirect the user to any of these pages if they ask to see them, book something, or check specific tools. Keep answers short and conversational."
       }
     ],
     tools: [
@@ -28,7 +28,7 @@ const assistantConfig = {
               page: {
                 type: "string",
                 description: "The page to navigate to.",
-                enum: ["home", "dashboard", "book_slot", "prices", "map", "schemes", "help", "seeds", "ai_doctor", "weather", "transport", "book_transport", "transactions"]
+                enum: ["home", "dashboard", "book_slot", "prices", "map", "schemes", "help", "seeds", "ai_doctor", "weather", "transport", "book_transport", "transactions", "reels"]
               }
             },
             required: ["page"]
@@ -82,6 +82,7 @@ export default function AISpeakingAgent() {
               else if (page === 'transport') navigate('/transport');
               else if (page === 'book_transport') navigate('/book-transport');
               else if (page === 'transactions') navigate('/transactions');
+              else if (page === 'reels') navigate('/reels');
             } catch (e) {
               console.error("Failed to parse tool call arguments", e);
             }
@@ -105,6 +106,7 @@ export default function AISpeakingAgent() {
         else if (page === 'transport') navigate('/transport');
         else if (page === 'book_transport') navigate('/book-transport');
         else if (page === 'transactions') navigate('/transactions');
+        else if (page === 'reels') navigate('/reels');
       }
     });
 

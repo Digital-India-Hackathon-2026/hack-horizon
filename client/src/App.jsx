@@ -18,6 +18,7 @@ import MapView from './pages/MapView';
 import MarketPrices from './pages/MarketPrices';
 import Schemes from './pages/Schemes';
 import Help from './pages/Help';
+import KrishiReels from './pages/KrishiReels';
 
 // Advanced Feature Pages
 
@@ -79,6 +80,7 @@ function AppContent() {
         {/* Advanced Feature Routes */}
 
         <Route path="/seeds" element={<SeedsCatalog />} />
+        <Route path="/reels" element={<KrishiReels />} />
         <Route path="/ai-doctor" element={<AIDoctor />} />
         <Route path="/weather" element={<Weather />} />
         <Route path="/transport" element={<Transport />} />
